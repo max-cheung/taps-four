@@ -6,6 +6,20 @@ body {
     width: 90%;
     border: 1px solid red;
     margin: 2%;
+    padding: 25px;
+}
+
+h1 {
+    font-size: 7rem;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+h3 {
+    font-size: 2rem;
 }
 
 .container {
@@ -21,40 +35,79 @@ body {
 }
 
 .containerAge {
-    border: 1px solid black;
+    background-color: lightgray;
     width: 40%;
-    line-height: 25px;
+    line-height: 35px;
     text-align: center;
+    margin: 25px 0;
+    padding: 20px;
 }
 
 /************Grid 7 Column 5 Rows**********/
 
 .column7row5 {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: 4fr repeat(6, 1fr);
     grid-template-rows: repeat(5, 1fr);
     grid-column-gap: 0px;
     grid-row-gap: 0px;
-    margin: 25px;
+    margin: 20px 0;
+    border: 1px black solid;
+    grid-gap: 1px;
+    background-color: black;
 }
 
 .column7row5 > span {
+    background-color: white;
+    height: 40px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/************Grid 7 Column 4 Rows**********/
+
+.column7row4 {
+    display: grid;
+    grid-template-columns: 4fr repeat(6, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    margin: 20px 0;
     border: 1px black solid;
-    height: 50px;
+    grid-gap: 1px;
+    background-color: black;
+}
+
+.column7row4 > span {
+    background-color: white;
+    height: 40px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /************Grid 7 Column 1 Rows**********/
 
 .column7row1 {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: 4fr repeat(6, 1fr);
     grid-template-rows: repeat(1, 1fr);
     grid-column-gap: 0px;
     grid-row-gap: 0px;
-    margin: 25px;
+    margin: 20px 0;
+    border: 1px black solid;
+    grid-gap: 1px;
+    background-color: black;
 }
 
 .column7row1 > span {
-    border: 1px black solid;
-    height: 50px;
+    background-color: white;
+    height: 40px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
