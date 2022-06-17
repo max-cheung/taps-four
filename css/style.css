@@ -13,9 +13,17 @@ h1 {
     font-size: 7rem;
 }
 
-h2 {
+.containerAge h2 {
     font-size: 1.5rem;
     font-weight: 600;
+}
+
+body > h2 {
+    display: inline-block;
+    font-size: 1.5rem;
+    font-weight: 600;
+    border: 1px black solid;
+    width: 40%;
 }
 
 h3 {
@@ -43,32 +51,43 @@ h3 {
     padding: 20px;
 }
 
-/************Grid 7 Column 5 Rows**********/
+/************Grid 7 Column 4 Rows**********/
 
-.column7row5 {
+.column7row4 {
     display: grid;
     grid-template-columns: 4fr repeat(6, 1fr);
-    grid-template-rows: repeat(5, 1fr);
+    grid-template-rows: repeat(4, 1fr);
     grid-column-gap: 0px;
     grid-row-gap: 0px;
     margin: 20px 0;
-    border: 1px black solid;
-    grid-gap: 1px;
-    background-color: black;
 }
 
-.column7row5 > span {
-    background-color: white;
+.column7row4 > span {
+    border: 1px black solid;
     height: 40px;
     text-align: center;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 0 -1px -1px 0;
 }
 
-/************Grid 7 Column 4 Rows**********/
+.column7row4 > .empty {
+    grid-area: 1/4/4/5;
+    height: 118px;
+    border: none;
+}
 
-.column7row4 {
+.spanTwo { grid-area: 4/1/4/3 }
+
+.column7row4 input {
+    height: 25px;
+}
+
+/************Grid 7 Column 3 Rows**********/
+/* get rid of background color */
+
+.column7row3 {
     display: grid;
     grid-template-columns: 4fr repeat(6, 1fr);
     grid-template-rows: repeat(4, 1fr);
@@ -80,7 +99,7 @@ h3 {
     background-color: black;
 }
 
-.column7row4 > span {
+.column7row3 > span {
     background-color: white;
     height: 40px;
     text-align: center;
@@ -90,6 +109,7 @@ h3 {
 }
 
 /************Grid 7 Column 1 Rows**********/
+/* get rid of background color */
 
 .column7row1 {
     display: grid;
@@ -112,22 +132,19 @@ h3 {
     align-items: center;
 }
 
-/********************Test******************/
+/****************Column Header*************/
 
-/************Grid 7 Column 5 Rows**********/
-
-.column7row5test {
+.columnHeader {
     display: grid;
     grid-template-columns: 4fr repeat(6, 1fr);
-    grid-template-rows: repeat(4, 1fr);
+    grid-template-rows: repeat(1, 1fr);
     grid-column-gap: 0px;
     grid-row-gap: 0px;
     margin: 20px 0;
 }
 
-.column7row5test > span {
+.columnHeader > span {
     border: 1px black solid;
-    border-collapse: collapse;
     height: 40px;
     text-align: center;
     display: flex;
@@ -136,14 +153,12 @@ h3 {
     margin: 0 -1px -1px 0;
 }
 
-.column7row5test > .empty {
-    grid-area: 1/4/4/5;
-    height: 118px;
-    border: none;
+.columnHeader > span:first-child {
+    text-align: center;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: 600;
 }
 
-.spanTwo { grid-area: 4/1/4/3 }
-
-.column7row5test input {
-    height: 25px;
-}
