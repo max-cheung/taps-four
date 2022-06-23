@@ -4,6 +4,7 @@
 
 body {
     width: 90%;
+    min-width: 900px;
     border: 1px solid red;
     margin: 2%;
     padding: 25px;
@@ -22,7 +23,6 @@ body > h2 {
     display: inline-block;
     font-size: 1.5rem;
     font-weight: 600;
-    border: 1px black solid;
     width: 40%;
 }
 
@@ -51,6 +51,10 @@ h3 {
     padding: 20px;
 }
 
+/****************Grid Layouts***************/
+
+
+
 /************Grid 7 Column 4 Rows**********/
 
 .column7row4 {
@@ -78,38 +82,77 @@ h3 {
     border: none;
 }
 
-.spanTwo { grid-area: 4/1/4/3 }
+.column7row4 > .spanTwo { grid-area: 4/1/4/3 }
 
 .column7row4 input {
     height: 25px;
+    width: 94%
 }
 
 /************Grid 7 Column 3 Rows**********/
-/* get rid of background color */
 
 .column7row3 {
     display: grid;
     grid-template-columns: 4fr repeat(6, 1fr);
-    grid-template-rows: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
     grid-column-gap: 0px;
     grid-row-gap: 0px;
     margin: 20px 0;
-    border: 1px black solid;
-    grid-gap: 1px;
-    background-color: black;
 }
 
 .column7row3 > span {
-    background-color: white;
+    border: 1px black solid;
     height: 40px;
     text-align: center;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 0 -1px -1px 0;
+}
+
+.column7row3 > .spanTwo { grid-area: 3/1/3/3 }
+
+.column7row3 input {
+    height: 25px;
+    width: 94%
+}
+
+/************Grid 7 Column 4 Rows**********/
+/**********Overall Score Conversion********/
+
+.column7row4.overall {
+    display: grid;
+    grid-template-columns: 5fr repeat(5, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    margin: 20px 0;
+}
+
+.column7row4.overall > span {
+    border: 1px black solid;
+    height: 40px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 -1px -1px 0;
+}
+
+.column7row4.overall > .empty {
+    grid-area: 1/3/4/4;
+    height: 118px;
+    border: none;
+}
+
+/* .column7row4.overall > .spanTwo { grid-area: 4/1/4/3 } */
+
+.column7row4.overall input {
+    height: 25px;
+    width: 94%
 }
 
 /************Grid 7 Column 1 Rows**********/
-/* get rid of background color */
 
 .column7row1 {
     display: grid;
@@ -118,18 +161,27 @@ h3 {
     grid-column-gap: 0px;
     grid-row-gap: 0px;
     margin: 20px 0;
-    border: 1px black solid;
-    grid-gap: 1px;
-    background-color: black;
 }
 
 .column7row1 > span {
-    background-color: white;
+    border: 1px black solid;
     height: 40px;
     text-align: center;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 0 -1px -1px 0;
+}
+
+.column7row1 > .empty {
+    grid-area: 1/4/1/5;
+    height: 40px;
+    border: none;
+}
+
+.column7row1 input {
+    height: 25px;
+    width: 94%
 }
 
 /****************Column Header*************/
@@ -144,13 +196,12 @@ h3 {
 }
 
 .columnHeader > span {
-    border: 1px black solid;
+    font-weight: 600;
     height: 40px;
     text-align: center;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 0 -1px -1px 0;
 }
 
 .columnHeader > span:first-child {
