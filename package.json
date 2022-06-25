@@ -1,0 +1,22 @@
+{
+  "name": "taps-four",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/max-cheung/taps-four.git"
+  },
+  "author": "Max Cheung",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/max-cheung/taps-four/issues"
+  },
+  "homepage": "https://github.com/max-cheung/taps-four#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}
