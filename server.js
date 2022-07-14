@@ -21,13 +21,19 @@ const db = mysql.createConnection({
     port: '/tmp/mysql.sock'
 });
 
-db.connect;
+db.connect((err) => {
+    if(err) {
+        throw err;
+    }
+    console.log('MySQL Connected...')
+});
 
-app.get('/taps', (req, res) => {
-    const sql = 'SELECT * FROM scaled_score_ages_9to95';
+app.get('/taps/:rawscore', (request, response) => {
+    const rawScore = request.params.rawscore;
+    const sql = `SELECT scaled_score FROM scaled_score_ages_9to95 WHERE subtest_2 = ${rawScore}`;
 
     db.query(sql, (err, result) => {
         if(err) throw err;
-        res.send(result);
+        response.send(result);
     });
 });

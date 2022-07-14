@@ -1,4 +1,5 @@
 document.querySelector('#calculateAge').addEventListener('click', calculateAge);
+document.querySelector('#calculateScore').addEventListener('click', calculateScore);
 
 function calculateAge() {
     const testDate = new Date(document.querySelector('#testDate').value);
@@ -7,17 +8,6 @@ function calculateAge() {
     if(birthDate>testDate) {
         return document.querySelector('#ageresult').innerText = `Chronological Age: Birthdate cannot come after test date.`;
     }
-    
-    // const birthYear = birthDate.getFullYear();
-    // const birthMonth = birthDate.getMonth()+1;
-    // const birthDay = birthDate.getDate()+1;
-    // const testYear = testDate.getFullYear();
-    // const testMonth = testDate.getMonth()+1;
-    // const testDay = testDate.getDate()+1;
-
-    // const yearDiff = testYear - birthYear;
-    // const monthDiff = testMonth - birthMonth;
-    // const dayDiff = testDay - birthDay;
 
     const ageInDays = (testDate-birthDate)/8.64e+7;
 
@@ -26,7 +16,21 @@ function calculateAge() {
     const yearDiff = Math.floor(ageInDays/365);
 
     document.querySelector('#ageresult').innerText = `Chronological Age: Year: ${yearDiff} Month: ${monthDiff} Day: ${dayDiff}`;
-
-    console.log(document.querySelector('#subtest2').value);
 }
 
+function calculateScore() {
+    const subtest2 = document.querySelector('#subtest2').value;
+
+    const url = `http://localhost:3000/taps/${subtest2}`;
+
+    fetch(url)
+    .then(res => res.json())
+    .then(data => {
+        console.log(data);
+        console.log(data[0].scaled_score);
+        document.querySelector('#subtest2_scaledScore').innerText = data[0].scaled_score;
+    })
+    .catch(err => {
+        console.log(`error ${err}`);
+    });
+}
