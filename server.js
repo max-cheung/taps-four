@@ -30,7 +30,7 @@ db.connect((err) => {
 
 app.get('/taps/:rawscore', (request, response) => {
     const rawScore = request.params.rawscore;
-    const sql = `SELECT scaled_score FROM scaled_score_ages_90to95 WHERE subtest_2 = ${rawScore}`;
+    const sql = `SELECT subtest_2 FROM scaled_score_ages_90to95 WHERE raw_score = ${rawScore}`;
 
     db.query(sql, (err, result) => {
         if(err) throw err;

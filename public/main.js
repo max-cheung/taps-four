@@ -27,8 +27,8 @@ function calculateScore() {
     .then(res => res.json())
     .then(data => {
         console.log(data);
-        console.log(data[0].scaled_score);
-        document.querySelector('#subtest2_scaledScore').innerText = data[0].scaled_score;
+        console.log(data[0].subtest_2);
+        document.querySelector('#subtest2_scaledScore').innerText = data[0].subtest_2;
     })
     .catch(err => {
         console.log(`error ${err}`);
