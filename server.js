@@ -28,9 +28,12 @@ db.connect((err) => {
     console.log('MySQL Connected...')
 });
 
-app.get('/taps/:rawscore', (request, response) => {
+app.get('/taps/:subtest/:rawscore', (request, response) => {
+    const subtest = request.params.subtest;
     const rawScore = request.params.rawscore;
-    const sql = `SELECT subtest_2 FROM scaled_score_ages_90to95 WHERE raw_score = ${rawScore}`;
+    console.log(request.params.subtest);
+    console.log(rawScore);
+    const sql = `SELECT ${subtest} FROM scaled_score_ages_90to95 WHERE raw_score = ${rawScore}`;
 
     db.query(sql, (err, result) => {
         if(err) throw err;
