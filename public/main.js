@@ -88,7 +88,7 @@ function calculateScore() {
     const subtest_2 = document.querySelector('#subtest2').value;
     const subtest_3 = document.querySelector('#subtest3').value;
     const subtest_4 = document.querySelector('#subtest4').value;
-    const subtest_5 = document.querySelector('#subtest5').value || null;
+    const subtest_5 = document.querySelector('#subtest5').value;
     const subtest_6 = document.querySelector('#subtest6').value;
     const subtest_7 = document.querySelector('#subtest7').value;
     const subtest_8 = document.querySelector('#subtest8').value;
