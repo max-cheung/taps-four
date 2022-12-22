@@ -84,19 +84,39 @@ function useTable(yearDiff, monthDiff) {
 function calculateScore() {
     useTable(yearDiff, monthDiff);
         
-    const subtest_1 = document.querySelector('#subtest1').value;
-    const subtest_2 = document.querySelector('#subtest2').value;
-    const subtest_3 = document.querySelector('#subtest3').value;
-    const subtest_4 = document.querySelector('#subtest4').value;
-    const subtest_5 = document.querySelector('#subtest5').value;
-    const subtest_6 = document.querySelector('#subtest6').value;
-    const subtest_7 = document.querySelector('#subtest7').value;
-    const subtest_8 = document.querySelector('#subtest8').value;
-    const subtest_9 = document.querySelector('#subtest9').value;
-    const subtest_10 = document.querySelector('#subtest10').value;
-    const subtest_11 = document.querySelector('#subtest11').value;
+    // create array for subtest values from document querySelector
+    // const subtestRawScoresArr = [];
+    // for(let i=1; i<=11; i++) {
+    //     subtestRawScoresArr.push(document.querySelector(`#subtest${i}`).value);
+    // }
+    // console.log(subtestRawScoresArr);
 
-    console.log(`${yearDiff}${monthDiff}`)
+    const subtestRawScores = {
+        subtest_1 : Number(document.querySelector('#subtest1').value),
+        subtest_2 : Number(document.querySelector('#subtest2').value),
+        subtest_3 : Number(document.querySelector('#subtest3').value),
+        subtest_4 : Number(document.querySelector('#subtest4').value),
+        subtest_5 : Number(document.querySelector('#subtest5').value),
+        subtest_6 : Number(document.querySelector('#subtest6').value),
+        subtest_7 : Number(document.querySelector('#subtest7').value),
+        subtest_8 : Number(document.querySelector('#subtest8').value),
+        subtest_9 : Number(document.querySelector('#subtest9').value),
+        subtest_10 : Number(document.querySelector('#subtest10').value),
+        subtest_11 : Number(document.querySelector('#subtest11').value),
+    }
+    console.log(subtestRawScores);
+
+    console.log(`${yearDiff}${monthDiff}`);
+
+    // create array of valid raw scores to fetch
+    const subtestRawScoresFetchArr = [];
+    for(const subtest in subtestRawScores) {
+        if(subtestRawScores[subtest]!=='') {
+            subtestRawScoresFetchArr.push(fetch(`http://localhost:3000/taps/${table}/${subtest}/${subtestRawScores[subtest]}`));
+        }
+    }
+    console.log(subtestRawScoresFetchArr);
+    
     const fetchScores = async() => {
         try {
             const res = await Promise.all([
@@ -112,6 +132,7 @@ function calculateScore() {
                 fetch(`http://localhost:3000/taps/${table}/subtest_10/${subtest_10}`),
                 fetch(`http://localhost:3000/taps/${table}/subtest_11/${subtest_11}`),
             ]);
+            console.log(res);
 
             const data = await Promise.all(res.map(r => r.json()))
             console.log(data);
