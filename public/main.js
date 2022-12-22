@@ -119,38 +119,47 @@ function calculateScore() {
     
     const fetchScores = async() => {
         try {
-            const res = await Promise.all([
-                fetch(`http://localhost:3000/taps/${table}/subtest_1/${subtest_1}`),
-                fetch(`http://localhost:3000/taps/${table}/subtest_2/${subtest_2}`),
-                fetch(`http://localhost:3000/taps/${table}/subtest_3/${subtest_3}`),
-                fetch(`http://localhost:3000/taps/${table}/subtest_4/${subtest_4}`),
-                fetch(`http://localhost:3000/taps/${table}/subtest_5/${subtest_5}`),
-                fetch(`http://localhost:3000/taps/${table}/subtest_6/${subtest_6}`),
-                fetch(`http://localhost:3000/taps/${table}/subtest_7/${subtest_7}`),
-                fetch(`http://localhost:3000/taps/${table}/subtest_8/${subtest_8}`),
-                fetch(`http://localhost:3000/taps/${table}/subtest_9/${subtest_9}`),
-                fetch(`http://localhost:3000/taps/${table}/subtest_10/${subtest_10}`),
-                fetch(`http://localhost:3000/taps/${table}/subtest_11/${subtest_11}`),
-            ]);
-            console.log(res);
-
-            const data = await Promise.all(res.map(r => r.json()))
-            console.log(data);
-            console.log(data.flat());
-            document.querySelector('#subtest2_scaledScore').innerText = data.flat()[1].subtest_2;
-            document.querySelector('#subtest3_scaledScore').innerText = `+ ${data.flat()[2].subtest_3}`;
-            document.querySelector('#subtest4_scaledScore').innerText = `+ ${data.flat()[3].subtest_4}`;
-            document.querySelector('#subtest5_scaledScore').innerText = data.flat()[4].subtest_5;
-            document.querySelector('#subtest7_scaledScore').innerText = data.flat()[6].subtest_7;
-            document.querySelector('#subtest9_scaledScore').innerText = `+ ${data.flat()[8].subtest_9}`;
-            document.querySelector('#subtest10_scaledScore').innerText = `+ ${data.flat()[9].subtest_10}`;
-            document.querySelector('#subtest8_scaledScore').innerText = data.flat()[7].subtest_8;
-            document.querySelector('#subtest1_scaledScore').innerText = data.flat()[0].subtest_1;
-            document.querySelector('#subtest11_scaledScore').innerText = `+ ${data.flat()[10].subtest_11}`;
-            document.querySelector('#subtest6_scaledScore').innerText = data.flat()[5].subtest_6;
+            const resTest = await Promise.all(subtestRawScoresFetchArr);
+            console.log(resTest);
         } catch {
             throw Error("Promised failed");
         }
     }
+    
+    // const fetchScores = async() => {
+    //     try {
+    //         const res = await Promise.all([
+    //             fetch(`http://localhost:3000/taps/${table}/subtest_1/${subtest_1}`),
+    //             fetch(`http://localhost:3000/taps/${table}/subtest_2/${subtest_2}`),
+    //             fetch(`http://localhost:3000/taps/${table}/subtest_3/${subtest_3}`),
+    //             fetch(`http://localhost:3000/taps/${table}/subtest_4/${subtest_4}`),
+    //             fetch(`http://localhost:3000/taps/${table}/subtest_5/${subtest_5}`),
+    //             fetch(`http://localhost:3000/taps/${table}/subtest_6/${subtest_6}`),
+    //             fetch(`http://localhost:3000/taps/${table}/subtest_7/${subtest_7}`),
+    //             fetch(`http://localhost:3000/taps/${table}/subtest_8/${subtest_8}`),
+    //             fetch(`http://localhost:3000/taps/${table}/subtest_9/${subtest_9}`),
+    //             fetch(`http://localhost:3000/taps/${table}/subtest_10/${subtest_10}`),
+    //             fetch(`http://localhost:3000/taps/${table}/subtest_11/${subtest_11}`),
+    //         ]);
+    //         console.log(res);
+
+    //         const data = await Promise.all(res.map(r => r.json()))
+    //         console.log(data);
+    //         console.log(data.flat());
+    //         document.querySelector('#subtest2_scaledScore').innerText = data.flat()[1].subtest_2;
+    //         document.querySelector('#subtest3_scaledScore').innerText = `+ ${data.flat()[2].subtest_3}`;
+    //         document.querySelector('#subtest4_scaledScore').innerText = `+ ${data.flat()[3].subtest_4}`;
+    //         document.querySelector('#subtest5_scaledScore').innerText = data.flat()[4].subtest_5;
+    //         document.querySelector('#subtest7_scaledScore').innerText = data.flat()[6].subtest_7;
+    //         document.querySelector('#subtest9_scaledScore').innerText = `+ ${data.flat()[8].subtest_9}`;
+    //         document.querySelector('#subtest10_scaledScore').innerText = `+ ${data.flat()[9].subtest_10}`;
+    //         document.querySelector('#subtest8_scaledScore').innerText = data.flat()[7].subtest_8;
+    //         document.querySelector('#subtest1_scaledScore').innerText = data.flat()[0].subtest_1;
+    //         document.querySelector('#subtest11_scaledScore').innerText = `+ ${data.flat()[10].subtest_11}`;
+    //         document.querySelector('#subtest6_scaledScore').innerText = data.flat()[5].subtest_6;
+    //     } catch {
+    //         throw Error("Promised failed");
+    //     }
+    // }
     fetchScores();
 }
