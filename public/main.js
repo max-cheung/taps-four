@@ -111,7 +111,7 @@ function calculateScore() {
     // create array of valid raw scores to fetch
     const subtestRawScoresFetchArr = [];
     for(const subtest in subtestRawScores) {
-        if(subtestRawScores[subtest]!=='') {
+        if(subtestRawScores[subtest]>0) {
             subtestRawScoresFetchArr.push(fetch(`http://localhost:3000/taps/${table}/${subtest}/${subtestRawScores[subtest]}`));
         }
     }
@@ -121,6 +121,8 @@ function calculateScore() {
         try {
             const resTest = await Promise.all(subtestRawScoresFetchArr);
             console.log(resTest);
+            const resTestMap = await Promise.all(resTest.map(r => r.json()));
+            console.log(resTestMap.flat());
         } catch {
             throw Error("Promised failed");
         }
