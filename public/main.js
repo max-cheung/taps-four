@@ -116,17 +116,34 @@ function calculateScore() {
         }
     }
     console.log(subtestRawScoresFetchArr);
+
+    const arrScaledScores = [];
     
     const fetchScores = async() => {
         try {
-            const resTest = await Promise.all(subtestRawScoresFetchArr);
-            console.log(resTest);
-            const resTestMap = await Promise.all(resTest.map(r => r.json()));
-            console.log(resTestMap.flat());
+            const res = await Promise.all(subtestRawScoresFetchArr);
+            console.log(res);
+            const resData = await Promise.all(res.map(r => r.json()));
+            console.log(resData.flat());
+            console.log(...resData.flat());
+            arrScaledScores.push(...resData.flat());
+            console.log(arrScaledScores);
         } catch {
             throw Error("Promised failed");
         }
+        
+        console.log(arrScaledScores);
     }
+
+    fetchScores();
+
+    // why does everything below this not run?
+    // nevermind, it runs, because of the async function arrScaledScores doesn't have any value initially.:w
+
+    console.log('hello world');
+    arrScaledScores.forEach((ele, index, array) => {
+        return console.log('hello world');
+    })
     
     // const fetchScores = async() => {
     //     try {
@@ -163,5 +180,4 @@ function calculateScore() {
     //         throw Error("Promised failed");
     //     }
     // }
-    fetchScores();
 }
