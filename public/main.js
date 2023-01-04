@@ -4,6 +4,7 @@ document.querySelector('#calculateScore').addEventListener('click', calculateSco
 let monthDiff;
 let yearDiff;
 let table;
+const arrScaledScores = [];
 
 function calculateAge() {
     const testDate = new Date(document.querySelector('#testDate').value);
@@ -116,8 +117,6 @@ function calculateScore() {
         }
     }
     console.log(subtestRawScoresFetchArr);
-
-    const arrScaledScores = [];
     
     const fetchScores = async() => {
         try {
@@ -131,20 +130,21 @@ function calculateScore() {
         } catch {
             throw Error("Promised failed");
         }
-        
-        console.log(arrScaledScores);
+        arrScaledScores.forEach((ele) => {
+            let subtest = Object.keys(ele)[0];
+            let score = Object.values(ele)[0];
+            console.log(subtest);
+            console.log(score);
+            if(document.querySelector(`#${subtest}_scaledScore`).innerText==='+') {
+                document.querySelector(`#${subtest}_scaledScore`).innerText = `+ ${score}`;
+            } else if(document.querySelector(`#${subtest}_scaledScore`).innerText===''){
+                document.querySelector(`#${subtest}_scaledScore`).innerText = score;
+            }
+        });
     }
 
     fetchScores();
 
-    // why does everything below this not run?
-    // nevermind, it runs, because of the async function arrScaledScores doesn't have any value initially.:w
-
-    console.log('hello world');
-    arrScaledScores.forEach((ele, index, array) => {
-        return console.log('hello world');
-    })
-    
     // const fetchScores = async() => {
     //     try {
     //         const res = await Promise.all([
@@ -181,3 +181,13 @@ function calculateScore() {
     //     }
     // }
 }
+
+// function inputScaledScores() {
+//     arrScaledScores.forEach((ele) => {
+//         let subtest = Object.keys(ele)[0];
+//         let score = Object.values(ele)[0];
+//         console.log(subtest);
+//         console.log(score);
+//         document.querySelector(`#${subtest}_scaledScore`).innerText = score;
+//     });
+// }
