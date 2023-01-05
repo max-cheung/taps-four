@@ -4,8 +4,10 @@ document.querySelector('#calculateScore').addEventListener('click', calculateSco
 let monthDiff;
 let yearDiff;
 let table;
-const arrScaledScores = [];
+let arrScaledScores = [];
+let objScaledScores = {};
 
+// function that calculates the age and updates the DOM
 function calculateAge() {
     const testDate = new Date(document.querySelector('#testDate').value);
     const birthDate = new Date(document.querySelector('#birthDate').value);
@@ -82,16 +84,14 @@ function useTable(yearDiff, monthDiff) {
     } 
 }
 
+// function that fetches and updates DOM with scaled scores
 function calculateScore() {
     useTable(yearDiff, monthDiff);
-        
-    // create array for subtest values from document querySelector
-    // const subtestRawScoresArr = [];
-    // for(let i=1; i<=11; i++) {
-    //     subtestRawScoresArr.push(document.querySelector(`#subtest${i}`).value);
-    // }
-    // console.log(subtestRawScoresArr);
 
+    // resetting arr and obj
+    arrScaledScores = [];
+    objScaledScores = {};
+        
     const subtestRawScores = {
         subtest_1 : Number(document.querySelector('#subtest1').value),
         subtest_2 : Number(document.querySelector('#subtest2').value),
@@ -105,89 +105,51 @@ function calculateScore() {
         subtest_10 : Number(document.querySelector('#subtest10').value),
         subtest_11 : Number(document.querySelector('#subtest11').value),
     }
-    console.log(subtestRawScores);
-
-    console.log(`${yearDiff}${monthDiff}`);
 
     // create array of valid raw scores to fetch
     const subtestRawScoresFetchArr = [];
     for(const subtest in subtestRawScores) {
         if(subtestRawScores[subtest]>0) {
             subtestRawScoresFetchArr.push(fetch(`http://localhost:3000/taps/${table}/${subtest}/${subtestRawScores[subtest]}`));
+        } else {
+            // resets DOM to blank if raw score is not greater than 0
+            document.querySelector(`#${subtest}_scaledScore`).innerText = '';
         }
     }
-    console.log(subtestRawScoresFetchArr);
     
-    const fetchScores = async() => {
+    // fetches fields that contain raw scoles
+    const fetchScores = async(callBackFn) => {
         try {
             const res = await Promise.all(subtestRawScoresFetchArr);
-            console.log(res);
             const resData = await Promise.all(res.map(r => r.json()));
-            console.log(resData.flat());
-            console.log(...resData.flat());
             arrScaledScores.push(...resData.flat());
-            console.log(arrScaledScores);
         } catch {
             throw Error("Promised failed");
         }
+
+        // inputs scaled scores from fetch into the DOM
         arrScaledScores.forEach((ele) => {
             let subtest = Object.keys(ele)[0];
             let score = Object.values(ele)[0];
-            console.log(subtest);
-            console.log(score);
-            if(document.querySelector(`#${subtest}_scaledScore`).innerText==='+') {
-                document.querySelector(`#${subtest}_scaledScore`).innerText = `+ ${score}`;
-            } else if(document.querySelector(`#${subtest}_scaledScore`).innerText===''){
-                document.querySelector(`#${subtest}_scaledScore`).innerText = score;
-            }
+            document.querySelector(`#${subtest}_scaledScore`).innerText = score;
         });
+
+        // convert array of objects of scaled scores to an object of scaled scores to ease of access
+        arrScaledScores.forEach((ele) => {
+            objScaledScores[Object.keys(ele)[0]] = Object.values(ele)[0];
+        });
+        callBackFn();
+        console.log(arrScaledScores);
+        console.log(objScaledScores);
     }
 
-    fetchScores();
-
-    // const fetchScores = async() => {
-    //     try {
-    //         const res = await Promise.all([
-    //             fetch(`http://localhost:3000/taps/${table}/subtest_1/${subtest_1}`),
-    //             fetch(`http://localhost:3000/taps/${table}/subtest_2/${subtest_2}`),
-    //             fetch(`http://localhost:3000/taps/${table}/subtest_3/${subtest_3}`),
-    //             fetch(`http://localhost:3000/taps/${table}/subtest_4/${subtest_4}`),
-    //             fetch(`http://localhost:3000/taps/${table}/subtest_5/${subtest_5}`),
-    //             fetch(`http://localhost:3000/taps/${table}/subtest_6/${subtest_6}`),
-    //             fetch(`http://localhost:3000/taps/${table}/subtest_7/${subtest_7}`),
-    //             fetch(`http://localhost:3000/taps/${table}/subtest_8/${subtest_8}`),
-    //             fetch(`http://localhost:3000/taps/${table}/subtest_9/${subtest_9}`),
-    //             fetch(`http://localhost:3000/taps/${table}/subtest_10/${subtest_10}`),
-    //             fetch(`http://localhost:3000/taps/${table}/subtest_11/${subtest_11}`),
-    //         ]);
-    //         console.log(res);
-
-    //         const data = await Promise.all(res.map(r => r.json()))
-    //         console.log(data);
-    //         console.log(data.flat());
-    //         document.querySelector('#subtest2_scaledScore').innerText = data.flat()[1].subtest_2;
-    //         document.querySelector('#subtest3_scaledScore').innerText = `+ ${data.flat()[2].subtest_3}`;
-    //         document.querySelector('#subtest4_scaledScore').innerText = `+ ${data.flat()[3].subtest_4}`;
-    //         document.querySelector('#subtest5_scaledScore').innerText = data.flat()[4].subtest_5;
-    //         document.querySelector('#subtest7_scaledScore').innerText = data.flat()[6].subtest_7;
-    //         document.querySelector('#subtest9_scaledScore').innerText = `+ ${data.flat()[8].subtest_9}`;
-    //         document.querySelector('#subtest10_scaledScore').innerText = `+ ${data.flat()[9].subtest_10}`;
-    //         document.querySelector('#subtest8_scaledScore').innerText = data.flat()[7].subtest_8;
-    //         document.querySelector('#subtest1_scaledScore').innerText = data.flat()[0].subtest_1;
-    //         document.querySelector('#subtest11_scaledScore').innerText = `+ ${data.flat()[10].subtest_11}`;
-    //         document.querySelector('#subtest6_scaledScore').innerText = data.flat()[5].subtest_6;
-    //     } catch {
-    //         throw Error("Promised failed");
-    //     }
-    // }
+    // runs the fetchScores function
+    fetchScores(sumScaledScores);
 }
 
-// function inputScaledScores() {
-//     arrScaledScores.forEach((ele) => {
-//         let subtest = Object.keys(ele)[0];
-//         let score = Object.values(ele)[0];
-//         console.log(subtest);
-//         console.log(score);
-//         document.querySelector(`#${subtest}_scaledScore`).innerText = score;
-//     });
-// }
+// function that sums scaled scores and updates the DOM
+function sumScaledScores() {
+    const ppiSumScaledScore = objScaledScores.subtest_2 + objScaledScores.subtest_3 + objScaledScores.subtest_4;
+    
+    document.querySelector('#ppi_sum').innerText = ppiSumScaledScore;
+}
