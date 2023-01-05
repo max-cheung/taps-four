@@ -139,8 +139,6 @@ function calculateScore() {
             objScaledScores[Object.keys(ele)[0]] = Object.values(ele)[0];
         });
         callBackFn();
-        console.log(arrScaledScores);
-        console.log(objScaledScores);
     }
 
     // runs the fetchScores function
@@ -149,7 +147,27 @@ function calculateScore() {
 
 // function that sums scaled scores and updates the DOM
 function sumScaledScores() {
+
+    // loops through and replaces missing subtests with 0 so sums are not NaN
+    for(let i=1; i<=11; i++) {
+        let subtest = `subtest_${i}`;
+        if(!objScaledScores.hasOwnProperty(subtest)) {
+            objScaledScores[subtest]= 0;
+        }
+    }
+
     const ppiSumScaledScore = objScaledScores.subtest_2 + objScaledScores.subtest_3 + objScaledScores.subtest_4;
+    const amiSumScaledScore = objScaledScores.subtest_7 + objScaledScores.subtest_9 + objScaledScores.subtest_10;
+    const lciSumScaledScore = objScaledScores.subtest_1 + objScaledScores.subtest_11; 
+    const oscSumScaledScore = ppiSumScaledScore + amiSumScaledScore + lciSumScaledScore;
     
     document.querySelector('#ppi_sum').innerText = ppiSumScaledScore;
+    document.querySelector('#ami_sum').innerText = amiSumScaledScore;
+    document.querySelector('#lci_sum').innerText = lciSumScaledScore;
+    document.querySelector('#ppi').innerText = ppiSumScaledScore;
+    document.querySelector('#ami').innerText = amiSumScaledScore;
+    document.querySelector('#lci').innerText = lciSumScaledScore;
+    document.querySelector('#osc_sum').innerText = oscSumScaledScore;
 }
+
+// a function to alert user that numbers are missing
