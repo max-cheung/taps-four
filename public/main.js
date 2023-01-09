@@ -6,6 +6,11 @@ let yearDiff;
 let table;
 let arrScaledScores = [];
 let objScaledScores = {};
+let ppiSumScaledScore;
+let amiSumScaledScore;
+let lciSumScaledScore;
+let oscSumScaledScore;
+let arrIndexStandardScores = [];
 
 // function that calculates the age and updates the DOM
 function calculateAge() {
@@ -88,10 +93,18 @@ function useTable(yearDiff, monthDiff) {
 function calculateScore() {
     useTable(yearDiff, monthDiff);
 
+    // check for empty subtests
+    // subtests 2,3,4,7,9,10,1, and 11 can't be empty
+    // stops function if any of the above is empty
+    if(document.querySelector('#subtest2').value === '') {
+        return alert('Missing Raw Score for Subtest 2!')
+    }
     // resetting arr and obj
     arrScaledScores = [];
     objScaledScores = {};
-        
+    arrIndexStandardScores = [];
+
+    
     const subtestRawScores = {
         subtest_1 : Number(document.querySelector('#subtest1').value),
         subtest_2 : Number(document.querySelector('#subtest2').value),
@@ -109,7 +122,7 @@ function calculateScore() {
     // create array of valid raw scores to fetch
     const subtestRawScoresFetchArr = [];
     for(const subtest in subtestRawScores) {
-        if(subtestRawScores[subtest]>0) {
+        if(subtestRawScores[subtest]>=0) {
             subtestRawScoresFetchArr.push(fetch(`http://localhost:3000/taps/${table}/${subtest}/${subtestRawScores[subtest]}`));
         } else {
             // resets DOM to blank if raw score is not greater than 0
@@ -117,7 +130,7 @@ function calculateScore() {
         }
     }
     
-    // fetches fields that contain raw scoles
+    // fetches fields that contain raw scores
     const fetchScores = async(callBackFn) => {
         try {
             const res = await Promise.all(subtestRawScoresFetchArr);
@@ -147,19 +160,10 @@ function calculateScore() {
 
 // function that sums scaled scores and updates the DOM
 function sumScaledScores() {
-
-    // loops through and replaces missing subtests with 0 so sums are not NaN
-    for(let i=1; i<=11; i++) {
-        let subtest = `subtest_${i}`;
-        if(!objScaledScores.hasOwnProperty(subtest)) {
-            objScaledScores[subtest]= 0;
-        }
-    }
-
-    const ppiSumScaledScore = objScaledScores.subtest_2 + objScaledScores.subtest_3 + objScaledScores.subtest_4;
-    const amiSumScaledScore = objScaledScores.subtest_7 + objScaledScores.subtest_9 + objScaledScores.subtest_10;
-    const lciSumScaledScore = objScaledScores.subtest_1 + objScaledScores.subtest_11; 
-    const oscSumScaledScore = ppiSumScaledScore + amiSumScaledScore + lciSumScaledScore;
+    ppiSumScaledScore = objScaledScores.subtest_2 + objScaledScores.subtest_3 + objScaledScores.subtest_4;
+    amiSumScaledScore = objScaledScores.subtest_7 + objScaledScores.subtest_9 + objScaledScores.subtest_10;
+    lciSumScaledScore = objScaledScores.subtest_1 + objScaledScores.subtest_11; 
+    oscSumScaledScore = ppiSumScaledScore + amiSumScaledScore + lciSumScaledScore;
     
     document.querySelector('#ppi_sum').innerText = ppiSumScaledScore;
     document.querySelector('#ami_sum').innerText = amiSumScaledScore;
@@ -168,6 +172,36 @@ function sumScaledScores() {
     document.querySelector('#ami').innerText = amiSumScaledScore;
     document.querySelector('#lci').innerText = lciSumScaledScore;
     document.querySelector('#osc_sum').innerText = oscSumScaledScore;
+
+    calculateIndexStandardScore();
 }
 
-// a function to alert user that numbers are missing
+// function that fetches and updates DOM with Index Standard Score
+function calculateIndexStandardScore() {
+    // create array of sum of scaled scores to fetch
+    const arrSumScaledScore = [
+        fetch(`http://localhost:3000/taps/index_standard_score_ppi/${ppiSumScaledScore}`),
+        fetch(`http://localhost:3000/taps/index_standard_score_ami/${amiSumScaledScore}`),
+        fetch(`http://localhost:3000/taps/index_standard_score_lci/${lciSumScaledScore}`),
+        fetch(`http://localhost:3000/taps/overall_standard_score/${oscSumScaledScore}`),
+    ];
+
+    // fetch index standard scores from sum scaled scores
+    const fetchIndexStandardScores = async() => {
+        try {
+            const res = await Promise.all(arrSumScaledScore);
+            const resData = await Promise.all(res.map(r => r.json()));
+            arrIndexStandardScores.push(...resData.flat());
+
+            // input index standard scores from fetch into the DOM
+            document.querySelector('#index_standard_score_ppi').innerText = arrIndexStandardScores[0].standard_score;
+            document.querySelector('#index_standard_score_ami').innerText = arrIndexStandardScores[1].standard_score;
+            document.querySelector('#index_standard_score_lci').innerText = arrIndexStandardScores[2].standard_score;
+            document.querySelector('#index_standard_score_osc').innerText = arrIndexStandardScores[3].standard_score;
+        } catch {
+            throw Error("Promised failed");
+        }
+    }
+
+    fetchIndexStandardScores();
+}
