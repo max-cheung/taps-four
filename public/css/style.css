@@ -222,6 +222,8 @@ h3 {
 
 .alertRed {
     border-color: red;
+    border-style: solid;
+    background-color: pink;
 }
 
 .alertText {

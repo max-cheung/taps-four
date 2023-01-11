@@ -12,9 +12,9 @@ let lciSumScaledScore;
 let oscSumScaledScore;
 let arrIndexStandardScores = [];
 
-// function to highlight missing fields
-function removeRed() {
-    document.querySelector('#subtest2').classList.remove('alertRed');
+// function to remove 'alertRed' class from highlighted missing fields
+function removeRed(subtest) {
+    document.querySelector(subtest).classList.remove('alertRed');
 }
 
 // function that calculates the age and updates the DOM
@@ -126,17 +126,85 @@ function calculateScore() {
     arrIndexStandardScores = [];
 
     // check for empty subtests
+    //
     // subtests 2,3,4,7,9,10,1, and 11 can't be empty
+    // adds class of alertRed to indicate missing field for user, also adds event listener to remove the class when changed
     // stops function if any of the above is empty
+    // removes applicable scaled scores from DOM including index standard scores
     if(document.querySelector('#subtest2').value === '') {
         document.querySelector('#subtest2').classList.add('alertRed');
-        document.querySelector('#subtest2').addEventListener('change', removeRed);
+        document.querySelector('#subtest2').addEventListener('change', function() { removeRed('#subtest2')});
+        // removes applicable calculations from the DOM
+        document.querySelector('#subtest_2_scaledScore').innerText = '';
+        document.querySelector('#ppi_sum').innerText = '';
+        document.querySelector('#index_standard_score_ppi').innerText = '';
     }
     if(document.querySelector('#subtest3').value === '') {
         document.querySelector('#subtest3').classList.add('alertRed');
-        document.querySelector('#subtest3').addEventListener('change', removeRed);
+        document.querySelector('#subtest3').addEventListener('change', function() { removeRed('#subtest3')});
+        // removes applicable calculations from the DOM
+        document.querySelector('#subtest_3_scaledScore').innerText = '';
+        document.querySelector('#ppi_sum').innerText = '';
+        document.querySelector('#index_standard_score_ppi').innerText = '';
     }
-    if(document.querySelector('#subtest2').value === '' || document.querySelector('#subtest3').value === '') {
+    if(document.querySelector('#subtest4').value === '') {
+        document.querySelector('#subtest4').classList.add('alertRed');
+        document.querySelector('#subtest4').addEventListener('change', function() { removeRed('#subtest4')});
+        // removes applicable calculations from the DOM
+        document.querySelector('#subtest_4_scaledScore').innerText = '';
+        document.querySelector('#ppi_sum').innerText = '';
+        document.querySelector('#index_standard_score_ppi').innerText = '';
+    }
+    if(document.querySelector('#subtest7').value === '') {
+        document.querySelector('#subtest7').classList.add('alertRed');
+        document.querySelector('#subtest7').addEventListener('change', function() { removeRed('#subtest7')});
+        // removes applicable calculations from the DOM
+        document.querySelector('#subtest_7_scaledScore').innerText = '';
+        document.querySelector('#ami_sum').innerText = '';
+        document.querySelector('#index_standard_score_ami').innerText = '';
+    }
+    if(document.querySelector('#subtest9').value === '') {
+        document.querySelector('#subtest9').classList.add('alertRed');
+        document.querySelector('#subtest9').addEventListener('change', function() { removeRed('#subtest9')});
+        // removes applicable calculations from the DOM
+        document.querySelector('#subtest_9_scaledScore').innerText = '';
+        document.querySelector('#ami_sum').innerText = '';
+        document.querySelector('#index_standard_score_ami').innerText = '';
+    }
+    if(document.querySelector('#subtest10').value === '') {
+        document.querySelector('#subtest10').classList.add('alertRed');
+        document.querySelector('#subtest10').addEventListener('change', function() { removeRed('#subtest10')});
+        // removes applicable calculations from the DOM
+        document.querySelector('#subtest_10_scaledScore').innerText = '';
+        document.querySelector('#ami_sum').innerText = '';
+        document.querySelector('#index_standard_score_ami').innerText = '';
+    }
+    if(document.querySelector('#subtest1').value === '') {
+        document.querySelector('#subtest1').classList.add('alertRed');
+        document.querySelector('#subtest1').addEventListener('change', function() { removeRed('#subtest1')});
+        // removes applicable calculations from the DOM
+        document.querySelector('#subtest_1_scaledScore').innerText = '';
+        document.querySelector('#lci_sum').innerText = '';
+        document.querySelector('#index_standard_score_lci').innerText = '';
+    }
+    if(document.querySelector('#subtest11').value === '') {
+        document.querySelector('#subtest11').classList.add('alertRed');
+        document.querySelector('#subtest11').addEventListener('change', function() { removeRed('#subtest11')});
+        // removes applicable calculations from the DOM
+        document.querySelector('#subtest_11_scaledScore').innerText = '';
+        document.querySelector('#lci_sum').innerText = '';
+        document.querySelector('#index_standard_score_lci').innerText = '';
+    }
+    if(
+        document.querySelector('#subtest2').value === '' ||
+        document.querySelector('#subtest3').value === '' ||
+        document.querySelector('#subtest4').value === '' ||
+        document.querySelector('#subtest7').value === '' ||
+        document.querySelector('#subtest9').value === '' ||
+        document.querySelector('#subtest10').value === '' ||
+        document.querySelector('#subtest1').value === '' ||
+        document.querySelector('#subtest11').value === ''
+    ) {
         return document.querySelector('#calculationError').innerText = 'Please fill out all required fields';
     }
 
@@ -161,7 +229,7 @@ function calculateScore() {
         if(subtestRawScores[subtest]>=0) {
             subtestRawScoresFetchArr.push(fetch(`http://localhost:3000/taps/${table}/${subtest}/${subtestRawScores[subtest]}`));
         } else {
-            // resets DOM to blank if raw score is not greater than 0
+            // resets DOM to blank if raw score is not greater than or equal to 0
             document.querySelector(`#${subtest}_scaledScore`).innerText = '';
         }
     }
