@@ -12,13 +12,30 @@ let lciSumScaledScore;
 let oscSumScaledScore;
 let arrIndexStandardScores = [];
 
+// function to highlight missing fields
+function removeRed() {
+    document.querySelector('#subtest2').classList.remove('alertRed');
+}
+
 // function that calculates the age and updates the DOM
 function calculateAge() {
+    // displays error if dates aren't provided
+    if(document.querySelector('#testDate').value==='' || document.querySelector('#birthDate').value==='') {
+        document.querySelector('#ageResult').classList.add('alertText');
+        return document.querySelector('#ageResult').innerText = `Chronological Age: Invalid Age`;
+    }
+
     const testDate = new Date(document.querySelector('#testDate').value);
     const birthDate = new Date(document.querySelector('#birthDate').value);
 
     if(birthDate>testDate) {
-        return document.querySelector('#ageresult').innerText = `Chronological Age: Birthdate cannot come after test date.`;
+        dayDiff = undefined;
+        monthDiff = undefined;
+        yearDiff = undefined;
+        
+        //displays error if birthDate comes after testDate
+        document.querySelector('#ageResult').classList.add('alertText');
+        return document.querySelector('#ageResult').innerText = `Chronological Age: Birthdate cannot come after test date.`;
     }
 
     const ageInDays = (testDate-birthDate)/8.64e+7;
@@ -26,8 +43,10 @@ function calculateAge() {
     dayDiff = Math.floor(ageInDays%365%30.4167);
     monthDiff = Math.floor(ageInDays%365/30.4167);
     yearDiff = Math.floor(ageInDays/365);
-
-    document.querySelector('#ageresult').innerText = `Chronological Age: Year: ${yearDiff} Month: ${monthDiff} Day: ${dayDiff}`;
+    
+    // removes alertText and prints valid Chronological Age in the DOM
+    document.querySelector('#ageResult').classList.remove('alertText');
+    document.querySelector('#ageResult').innerText = `Chronological Age: Year: ${yearDiff} Month: ${monthDiff} Day: ${dayDiff}`;
 }
 
 // age calculation to determine db table
@@ -91,32 +110,49 @@ function useTable(yearDiff, monthDiff) {
 
 // function that fetches and updates DOM with scaled scores
 function calculateScore() {
+    // displays error if Chronological Age Calculator is not calculated prior
+    if(monthDiff===undefined || yearDiff===undefined) {
+        return document.querySelector('#calculationError').innerText = 'Please calculate Chronological Age First';
+    } else {
+        document.querySelector('#calculationError').innerText = '';
+    }
+
+    // function to set monthDiff and yearDiff
     useTable(yearDiff, monthDiff);
 
-    // check for empty subtests
-    // subtests 2,3,4,7,9,10,1, and 11 can't be empty
-    // stops function if any of the above is empty
-    if(document.querySelector('#subtest2').value === '') {
-        return alert('Missing Raw Score for Subtest 2!')
-    }
     // resetting arr and obj
     arrScaledScores = [];
     objScaledScores = {};
     arrIndexStandardScores = [];
 
-    
+    // check for empty subtests
+    // subtests 2,3,4,7,9,10,1, and 11 can't be empty
+    // stops function if any of the above is empty
+    if(document.querySelector('#subtest2').value === '') {
+        document.querySelector('#subtest2').classList.add('alertRed');
+        document.querySelector('#subtest2').addEventListener('change', removeRed);
+    }
+    if(document.querySelector('#subtest3').value === '') {
+        document.querySelector('#subtest3').classList.add('alertRed');
+        document.querySelector('#subtest3').addEventListener('change', removeRed);
+    }
+    if(document.querySelector('#subtest2').value === '' || document.querySelector('#subtest3').value === '') {
+        return document.querySelector('#calculationError').innerText = 'Please fill out all required fields';
+    }
+
+    // undefined prevents ''>=0 === true and creating fetch array with invalid input below
     const subtestRawScores = {
-        subtest_1 : Number(document.querySelector('#subtest1').value),
-        subtest_2 : Number(document.querySelector('#subtest2').value),
-        subtest_3 : Number(document.querySelector('#subtest3').value),
-        subtest_4 : Number(document.querySelector('#subtest4').value),
-        subtest_5 : Number(document.querySelector('#subtest5').value),
-        subtest_6 : Number(document.querySelector('#subtest6').value),
-        subtest_7 : Number(document.querySelector('#subtest7').value),
-        subtest_8 : Number(document.querySelector('#subtest8').value),
-        subtest_9 : Number(document.querySelector('#subtest9').value),
-        subtest_10 : Number(document.querySelector('#subtest10').value),
-        subtest_11 : Number(document.querySelector('#subtest11').value),
+        subtest_1 : document.querySelector('#subtest1').value!=='' ? Number(document.querySelector('#subtest1').value) : undefined,
+        subtest_2 : document.querySelector('#subtest2').value!=='' ? Number(document.querySelector('#subtest2').value) : undefined,
+        subtest_3 : document.querySelector('#subtest3').value!=='' ? Number(document.querySelector('#subtest3').value) : undefined,
+        subtest_4 : document.querySelector('#subtest4').value!=='' ? Number(document.querySelector('#subtest4').value) : undefined,
+        subtest_5 : document.querySelector('#subtest5').value!=='' ? Number(document.querySelector('#subtest5').value) : undefined,
+        subtest_6 : document.querySelector('#subtest6').value!=='' ? Number(document.querySelector('#subtest6').value) : undefined,
+        subtest_7 : document.querySelector('#subtest7').value!=='' ? Number(document.querySelector('#subtest7').value) : undefined,
+        subtest_8 : document.querySelector('#subtest8').value!=='' ? Number(document.querySelector('#subtest8').value) : undefined,
+        subtest_9 : document.querySelector('#subtest9').value!=='' ? Number(document.querySelector('#subtest9').value) : undefined,
+        subtest_10 : document.querySelector('#subtest10').value!=='' ? Number(document.querySelector('#subtest10').value) : undefined,
+        subtest_11 : document.querySelector('#subtest11').value!=='' ? Number(document.querySelector('#subtest11').value) : undefined,
     }
 
     // create array of valid raw scores to fetch

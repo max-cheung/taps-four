@@ -218,3 +218,13 @@ h3 {
     font-weight: 600;
 }
 
+/****************Alert Colors*************/
+
+.alertRed {
+    border-color: red;
+}
+
+.alertText {
+    color: red;
+    font-weight: bold;
+}
