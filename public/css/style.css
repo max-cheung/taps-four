@@ -230,3 +230,7 @@ h3 {
     color: red;
     font-weight: bold;
 }
+
+#calculationError {
+    margin-left: 10px;
+}
