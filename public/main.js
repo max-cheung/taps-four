@@ -125,6 +125,13 @@ function calculateScore() {
     objScaledScores = {};
     arrIndexStandardScores = [];
 
+    // check if any scaled scores are 'N/A' and prompt user of error
+    // can possibly combine this with the check for empty subtests below
+    if(document.querySelector('#subtest_2_scaledScore').innerText === 'N/A') {
+        document.querySelector('#subtest2').classList.add('alertRed');
+        document.querySelector('#subtest2').addEventListener('change', function() { removeRed('#subtest2')});
+    }
+
     // check for empty subtests
     //
     // subtests 2,3,4,7,9,10,1, and 11 can't be empty
@@ -138,6 +145,7 @@ function calculateScore() {
         document.querySelector('#subtest_2_scaledScore').innerText = '';
         document.querySelector('#ppi_sum').innerText = '';
         document.querySelector('#index_standard_score_ppi').innerText = '';
+        document.querySelector('#ppi').innerText = '';
     }
     if(document.querySelector('#subtest3').value === '') {
         document.querySelector('#subtest3').classList.add('alertRed');
@@ -146,6 +154,7 @@ function calculateScore() {
         document.querySelector('#subtest_3_scaledScore').innerText = '';
         document.querySelector('#ppi_sum').innerText = '';
         document.querySelector('#index_standard_score_ppi').innerText = '';
+        document.querySelector('#ppi').innerText = '';
     }
     if(document.querySelector('#subtest4').value === '') {
         document.querySelector('#subtest4').classList.add('alertRed');
@@ -154,6 +163,7 @@ function calculateScore() {
         document.querySelector('#subtest_4_scaledScore').innerText = '';
         document.querySelector('#ppi_sum').innerText = '';
         document.querySelector('#index_standard_score_ppi').innerText = '';
+        document.querySelector('#ppi').innerText = '';
     }
     if(document.querySelector('#subtest7').value === '') {
         document.querySelector('#subtest7').classList.add('alertRed');
@@ -162,6 +172,7 @@ function calculateScore() {
         document.querySelector('#subtest_7_scaledScore').innerText = '';
         document.querySelector('#ami_sum').innerText = '';
         document.querySelector('#index_standard_score_ami').innerText = '';
+        document.querySelector('#ami').innerText = '';
     }
     if(document.querySelector('#subtest9').value === '') {
         document.querySelector('#subtest9').classList.add('alertRed');
@@ -170,6 +181,7 @@ function calculateScore() {
         document.querySelector('#subtest_9_scaledScore').innerText = '';
         document.querySelector('#ami_sum').innerText = '';
         document.querySelector('#index_standard_score_ami').innerText = '';
+        document.querySelector('#ami').innerText = '';
     }
     if(document.querySelector('#subtest10').value === '') {
         document.querySelector('#subtest10').classList.add('alertRed');
@@ -178,6 +190,7 @@ function calculateScore() {
         document.querySelector('#subtest_10_scaledScore').innerText = '';
         document.querySelector('#ami_sum').innerText = '';
         document.querySelector('#index_standard_score_ami').innerText = '';
+        document.querySelector('#ami').innerText = '';
     }
     if(document.querySelector('#subtest1').value === '') {
         document.querySelector('#subtest1').classList.add('alertRed');
@@ -186,6 +199,7 @@ function calculateScore() {
         document.querySelector('#subtest_1_scaledScore').innerText = '';
         document.querySelector('#lci_sum').innerText = '';
         document.querySelector('#index_standard_score_lci').innerText = '';
+        document.querySelector('#lci').innerText = '';
     }
     if(document.querySelector('#subtest11').value === '') {
         document.querySelector('#subtest11').classList.add('alertRed');
@@ -194,6 +208,7 @@ function calculateScore() {
         document.querySelector('#subtest_11_scaledScore').innerText = '';
         document.querySelector('#lci_sum').innerText = '';
         document.querySelector('#index_standard_score_lci').innerText = '';
+        document.querySelector('#lci').innerText = '';
     }
     if(
         document.querySelector('#subtest2').value === '' ||
@@ -248,6 +263,10 @@ function calculateScore() {
         arrScaledScores.forEach((ele) => {
             let subtest = Object.keys(ele)[0];
             let score = Object.values(ele)[0];
+            // if score is not in DB (null), set score to 'N/A'
+            if(score===null) {
+                score = 'N/A';
+            }
             document.querySelector(`#${subtest}_scaledScore`).innerText = score;
         });
 
@@ -264,18 +283,51 @@ function calculateScore() {
 
 // function that sums scaled scores and updates the DOM
 function sumScaledScores() {
-    ppiSumScaledScore = objScaledScores.subtest_2 + objScaledScores.subtest_3 + objScaledScores.subtest_4;
-    amiSumScaledScore = objScaledScores.subtest_7 + objScaledScores.subtest_9 + objScaledScores.subtest_10;
-    lciSumScaledScore = objScaledScores.subtest_1 + objScaledScores.subtest_11; 
-    oscSumScaledScore = ppiSumScaledScore + amiSumScaledScore + lciSumScaledScore;
-    
-    document.querySelector('#ppi_sum').innerText = ppiSumScaledScore;
-    document.querySelector('#ami_sum').innerText = amiSumScaledScore;
-    document.querySelector('#lci_sum').innerText = lciSumScaledScore;
-    document.querySelector('#ppi').innerText = ppiSumScaledScore;
-    document.querySelector('#ami').innerText = amiSumScaledScore;
-    document.querySelector('#lci').innerText = lciSumScaledScore;
-    document.querySelector('#osc_sum').innerText = oscSumScaledScore;
+    // clears scaled scores
+    for(const key in objScaledScores) {
+        console.log(objScaledScores[key]);
+    }
+
+    // confirms that applicable raw scores are present before doing arithmetic inside the if statements
+    // if missing, else statement clears sums and the DOM of applicable values
+    if(objScaledScores.subtest_2 !== null && objScaledScores.subtest_3 !== null && objScaledScores.subtest_4 !== null) {
+        ppiSumScaledScore = objScaledScores.subtest_2 + objScaledScores.subtest_3 + objScaledScores.subtest_4;
+        document.querySelector('#ppi_sum').innerText = ppiSumScaledScore;
+        document.querySelector('#ppi').innerText = ppiSumScaledScore;
+    } else {
+        ppiSumScaledScore = 0;
+        document.querySelector('#ppi_sum').innerText = '';
+        document.querySelector('#index_standard_score_ppi').innerText = '';
+        document.querySelector('#ppi').innerText = '';
+    }
+    if(objScaledScores.subtest_7 !== null && objScaledScores.subtest_9 !== null && objScaledScores.subtest_10 !== null) {
+        amiSumScaledScore = objScaledScores.subtest_7 + objScaledScores.subtest_9 + objScaledScores.subtest_10;
+        document.querySelector('#ami_sum').innerText = amiSumScaledScore;
+        document.querySelector('#ami').innerText = amiSumScaledScore;
+    } else {
+        amiSumScaledScore = 0;
+        document.querySelector('#ami_sum').innerText = '';
+        document.querySelector('#index_standard_score_ami').innerText = '';
+        document.querySelector('#ami').innerText = '';
+    }
+    if(objScaledScores.subtest_1 !== null && objScaledScores.subtest_11 !== null) {
+        lciSumScaledScore = objScaledScores.subtest_1 + objScaledScores.subtest_11; 
+        document.querySelector('#lci_sum').innerText = lciSumScaledScore;
+        document.querySelector('#lci').innerText = lciSumScaledScore;
+    } else {
+        lciSumScaledScore = 0; 
+        document.querySelector('#lci_sum').innerText = '';
+        document.querySelector('#index_standard_score_lci').innerText = '';
+        document.querySelector('#lci').innerText = '';
+    }
+    if(ppiSumScaledScore > 0 && amiSumScaledScore > 0 && lciSumScaledScore > 0) {
+        oscSumScaledScore = ppiSumScaledScore + amiSumScaledScore + lciSumScaledScore;
+        document.querySelector('#osc_sum').innerText = oscSumScaledScore;
+    } else {
+        oscSumScaledScore = 0;
+        document.querySelector('#osc_sum').innerText = '';
+        document.querySelector('#index_standard_score_osc').innerText = '';
+    }
 
     calculateIndexStandardScore();
 }
@@ -289,6 +341,7 @@ function calculateIndexStandardScore() {
         fetch(`http://localhost:3000/taps/index_standard_score_lci/${lciSumScaledScore}`),
         fetch(`http://localhost:3000/taps/overall_standard_score/${oscSumScaledScore}`),
     ];
+    console.log(arrSumScaledScore);
 
     // fetch index standard scores from sum scaled scores
     const fetchIndexStandardScores = async() => {
@@ -296,12 +349,13 @@ function calculateIndexStandardScore() {
             const res = await Promise.all(arrSumScaledScore);
             const resData = await Promise.all(res.map(r => r.json()));
             arrIndexStandardScores.push(...resData.flat());
+            console.log(arrIndexStandardScores);
 
             // input index standard scores from fetch into the DOM
             document.querySelector('#index_standard_score_ppi').innerText = arrIndexStandardScores[0].standard_score;
             document.querySelector('#index_standard_score_ami').innerText = arrIndexStandardScores[1].standard_score;
             document.querySelector('#index_standard_score_lci').innerText = arrIndexStandardScores[2].standard_score;
-            document.querySelector('#index_standard_score_osc').innerText = arrIndexStandardScores[3].standard_score;
+            document.querySelector('#index_standard_score_osc').innerText = arrIndexStandardScores[3].standard_score;;
         } catch {
             throw Error("Promised failed");
         }
