@@ -125,13 +125,6 @@ function calculateScore() {
     objScaledScores = {};
     arrIndexStandardScores = [];
 
-    // check if any scaled scores are 'N/A' and prompt user of error
-    // can possibly combine this with the check for empty subtests below
-    // if(document.querySelector('#subtest_2_scaledScore').innerText === 'N/A') {
-    //     document.querySelector('#subtest_2').classList.add('alertRed');
-    //     document.querySelector('#subtest_2').addEventListener('change', function() { removeRed('#subtest_2')});
-    // }
-
     // check for empty subtests
     //
     // subtests 2,3,4,7,9,10,1, and 11 can't be empty
@@ -304,12 +297,6 @@ function calculateScore() {
 
 // function that sums scaled scores and updates the DOM
 function sumScaledScores() {
-    // clears scaled scores
-    for(const key in objScaledScores) {
-        console.log(key);
-        console.log(objScaledScores[key]);
-    }
-
     // confirms that applicable raw scores are present before doing arithmetic inside the if statements
     // if missing, else statement clears sums and the DOM of applicable values
     if(objScaledScores.subtest_2 !== null && objScaledScores.subtest_3 !== null && objScaledScores.subtest_4 !== null) {
@@ -352,6 +339,7 @@ function sumScaledScores() {
     }
 
     calculateIndexStandardScore();
+    calculateConfidenceInterval();
 }
 
 // function that fetches and updates DOM with Index Standard Score
@@ -385,4 +373,18 @@ function calculateIndexStandardScore() {
     }
 
     fetchIndexStandardScores();
+}
+
+// function that fetches & calculates confidence intervals and updates DOM
+function calculateConfidenceInterval() {
+    let table;
+    console.log(objScaledScores.subtest_2);
+    console.log(yearDiff);
+
+    // determine DB table based on age
+    if(yearDiff===9) {
+        table = 'age9';
+    }
+
+    console.log(table);
 }
