@@ -29,7 +29,7 @@ db.connect((err) => {
 });
 
 // get scaled scores from subtests
-app.get('/taps/:table/:subtest/:rawscore', (request, response) => {
+app.get('/taps/ss/:table/:subtest/:rawscore', (request, response) => {
     const table = request.params.table;
     const subtest = request.params.subtest;
     const rawScore = request.params.rawscore;
@@ -42,10 +42,21 @@ app.get('/taps/:table/:subtest/:rawscore', (request, response) => {
 });
 
 // get index standard scores from sum of scaled scores
-app.get('/taps/:table/:sumScaledScore', (request, response) => {
+app.get('/taps/iss/:table/:sumScaledScore', (request, response) => {
     const table = request.params.table;
     const sumScaledScore = request.params.sumScaledScore;
     const sql = `SELECT standard_score FROM ${table} WHERE sum_scaled_scores = ${sumScaledScore}`;
+
+    db.query(sql, (err, result) => {
+        if(err) throw err;
+        response.send(result);
+    });
+});
+
+// get confidence intervals
+app.get('/taps/ci/:table', (request, response) => {
+    const table = request.params.table;
+    const sql = `SELECT confidence_interval_95 FROM ${table}`;
 
     db.query(sql, (err, result) => {
         if(err) throw err;

@@ -251,7 +251,7 @@ function calculateScore() {
     const subtestRawScoresFetchArr = [];
     for(const subtest in subtestRawScores) {
         if(subtestRawScores[subtest]>=0) {
-            subtestRawScoresFetchArr.push(fetch(`http://localhost:3000/taps/${table}/${subtest}/${subtestRawScores[subtest]}`));
+            subtestRawScoresFetchArr.push(fetch(`http://localhost:3000/taps/ss/${table}/${subtest}/${subtestRawScores[subtest]}`));
         } else {
             // resets DOM to blank if raw score is not greater than or equal to 0
             document.querySelector(`#${subtest}_scaledScore`).innerText = '';
@@ -339,17 +339,16 @@ function sumScaledScores() {
     }
 
     calculateIndexStandardScore();
-    calculateConfidenceInterval();
 }
 
 // function that fetches and updates DOM with Index Standard Score
 function calculateIndexStandardScore() {
     // create array of sum of scaled scores to fetch
     const arrSumScaledScore = [
-        fetch(`http://localhost:3000/taps/index_standard_score_ppi/${ppiSumScaledScore}`),
-        fetch(`http://localhost:3000/taps/index_standard_score_ami/${amiSumScaledScore}`),
-        fetch(`http://localhost:3000/taps/index_standard_score_lci/${lciSumScaledScore}`),
-        fetch(`http://localhost:3000/taps/overall_standard_score/${oscSumScaledScore}`),
+        fetch(`http://localhost:3000/taps/iss/index_standard_score_ppi/${ppiSumScaledScore}`),
+        fetch(`http://localhost:3000/taps/iss/index_standard_score_ami/${amiSumScaledScore}`),
+        fetch(`http://localhost:3000/taps/iss/index_standard_score_lci/${lciSumScaledScore}`),
+        fetch(`http://localhost:3000/taps/iss/overall_standard_score/${oscSumScaledScore}`),
     ];
 
     // fetch index standard scores from sum scaled scores
@@ -373,6 +372,7 @@ function calculateIndexStandardScore() {
     }
 
     fetchIndexStandardScores();
+    calculateConfidenceInterval();
 }
 
 // function that fetches & calculates confidence intervals and updates DOM
@@ -387,4 +387,22 @@ function calculateConfidenceInterval() {
     }
 
     console.log(table);
+
+    // create an array of confidence intervals to fetch
+    const arrConfidenceIntervals = [
+        fetch(`http://localhost:3000/taps/ci/confidence_intervals_${table}`)
+    ];
+
+    // fetch confidence intervals for all subtests and indexes
+    const fetchConfidenceIntervals = async() => {
+        try {
+            const res = await Promise.all(arrConfidenceIntervals);
+            const resData = await Promise.all(res.map(r => r.json()));
+            console.log([...resData.flat()]);
+        } catch {
+            throw Error("Promised failed");
+        }
+    }
+
+    fetchConfidenceIntervals();
 }
