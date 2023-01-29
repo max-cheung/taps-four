@@ -11,6 +11,24 @@ let amiSumScaledScore;
 let lciSumScaledScore;
 let oscSumScaledScore;
 let arrIndexStandardScores = [];
+let objSubtestIndexStandardScores = {};
+let objConfidenceIntervals = {
+    subtest_1 : undefined,
+    subtest_2 : undefined,
+    subtest_3 : undefined,
+    subtest_4 : undefined,
+    subtest_5 : undefined,
+    subtest_6 : undefined,
+    subtest_7 : undefined,
+    subtest_8 : undefined,
+    subtest_9 : undefined,
+    subtest_10 : undefined,
+    subtest_11 : undefined,
+    ppi : undefined,
+    ami : undefined,
+    lci : undefined,
+    osc : undefined,
+};
 
 // function to remove 'alertRed' class from highlighted missing fields
 function removeRed(subtest) {
@@ -130,7 +148,7 @@ function calculateScore() {
     // subtests 2,3,4,7,9,10,1, and 11 can't be empty
     // adds class of alertRed to indicate missing field for user, also adds event listener to remove the class when changed
     // stops function if any of the above is empty
-    // removes applicable scaled scores from DOM including index standard scores
+    // removes applicable scaled scores from DOM including index standard scores and confidence intervals
     if(document.querySelector('#subtest_2').value === '') {
         document.querySelector('#subtest_2').classList.add('alertRed');
         document.querySelector('#subtest_2').addEventListener('change', function() { removeRed('#subtest_2')});
@@ -141,6 +159,9 @@ function calculateScore() {
         document.querySelector('#ppi').innerText = '';
         document.querySelector('#osc_sum').innerText = '';
         document.querySelector('#index_standard_score_osc').innerText = '';
+        document.querySelector('#subtest_2_ci').innerText = '-';
+        document.querySelector('#ppi_ci').innerText = '-';
+        document.querySelector('#osc_ci').innerText = '-';
     }
     if(document.querySelector('#subtest_3').value === '') {
         document.querySelector('#subtest_3').classList.add('alertRed');
@@ -152,6 +173,9 @@ function calculateScore() {
         document.querySelector('#ppi').innerText = '';
         document.querySelector('#osc_sum').innerText = '';
         document.querySelector('#index_standard_score_osc').innerText = '';
+        document.querySelector('#subtest_3_ci').innerText = '-';
+        document.querySelector('#ppi_ci').innerText = '-';
+        document.querySelector('#osc_ci').innerText = '-';
     }
     if(document.querySelector('#subtest_4').value === '') {
         document.querySelector('#subtest_4').classList.add('alertRed');
@@ -163,6 +187,9 @@ function calculateScore() {
         document.querySelector('#ppi').innerText = '';
         document.querySelector('#osc_sum').innerText = '';
         document.querySelector('#index_standard_score_osc').innerText = '';
+        document.querySelector('#subtest_4_ci').innerText = '-';
+        document.querySelector('#ppi_ci').innerText = '-';
+        document.querySelector('#osc_ci').innerText = '-';
     }
     if(document.querySelector('#subtest_7').value === '') {
         document.querySelector('#subtest_7').classList.add('alertRed');
@@ -174,6 +201,9 @@ function calculateScore() {
         document.querySelector('#ami').innerText = '';
         document.querySelector('#osc_sum').innerText = '';
         document.querySelector('#index_standard_score_osc').innerText = '';
+        document.querySelector('#subtest_7_ci').innerText = '-';
+        document.querySelector('#ami_ci').innerText = '-';
+        document.querySelector('#osc_ci').innerText = '-';
     }
     if(document.querySelector('#subtest_9').value === '') {
         document.querySelector('#subtest_9').classList.add('alertRed');
@@ -185,6 +215,9 @@ function calculateScore() {
         document.querySelector('#ami').innerText = '';
         document.querySelector('#osc_sum').innerText = '';
         document.querySelector('#index_standard_score_osc').innerText = '';
+        document.querySelector('#subtest_9_ci').innerText = '-';
+        document.querySelector('#ami_ci').innerText = '-';
+        document.querySelector('#osc_ci').innerText = '-';
     }
     if(document.querySelector('#subtest_10').value === '') {
         document.querySelector('#subtest_10').classList.add('alertRed');
@@ -196,6 +229,9 @@ function calculateScore() {
         document.querySelector('#ami').innerText = '';
         document.querySelector('#osc_sum').innerText = '';
         document.querySelector('#index_standard_score_osc').innerText = '';
+        document.querySelector('#subtest_10_ci').innerText = '-';
+        document.querySelector('#ami_ci').innerText = '-';
+        document.querySelector('#osc_ci').innerText = '-';
     }
     if(document.querySelector('#subtest_1').value === '') {
         document.querySelector('#subtest_1').classList.add('alertRed');
@@ -207,6 +243,9 @@ function calculateScore() {
         document.querySelector('#lci').innerText = '';
         document.querySelector('#osc_sum').innerText = '';
         document.querySelector('#index_standard_score_osc').innerText = '';
+        document.querySelector('#subtest_1_ci').innerText = '-';
+        document.querySelector('#lci_ci').innerText = '-';
+        document.querySelector('#osc_ci').innerText = '-';
     }
     if(document.querySelector('#subtest_11').value === '') {
         document.querySelector('#subtest_11').classList.add('alertRed');
@@ -218,6 +257,9 @@ function calculateScore() {
         document.querySelector('#lci').innerText = '';
         document.querySelector('#osc_sum').innerText = '';
         document.querySelector('#index_standard_score_osc').innerText = '';
+        document.querySelector('#subtest_11_ci').innerText = '-';
+        document.querySelector('#lci_ci').innerText = '-';
+        document.querySelector('#osc_ci').innerText = '-';
     }
     if(
         document.querySelector('#subtest_2').value === '' ||
@@ -253,8 +295,9 @@ function calculateScore() {
         if(subtestRawScores[subtest]>=0) {
             subtestRawScoresFetchArr.push(fetch(`http://localhost:3000/taps/ss/${table}/${subtest}/${subtestRawScores[subtest]}`));
         } else {
-            // resets DOM to blank if raw score is not greater than or equal to 0
+            // resets DOM to blank if raw score is not greater than or equal to 0 for subtests 5, 8 and 6
             document.querySelector(`#${subtest}_scaledScore`).innerText = '';
+            document.querySelector(`#${subtest}_ci`).innerText = '';
         }
     }
     
@@ -338,6 +381,7 @@ function sumScaledScores() {
         document.querySelector('#index_standard_score_osc').innerText = '';
     }
 
+    calculateSubtestIndexStandardScore();
     calculateIndexStandardScore();
 }
 
@@ -365,7 +409,7 @@ function calculateIndexStandardScore() {
             document.querySelector('#index_standard_score_ppi').innerText = arrIndexStandardScores[0].standard_score;
             document.querySelector('#index_standard_score_ami').innerText = arrIndexStandardScores[1].standard_score;
             document.querySelector('#index_standard_score_lci').innerText = arrIndexStandardScores[2].standard_score;
-            document.querySelector('#index_standard_score_osc').innerText = arrIndexStandardScores[3].standard_score;;
+            document.querySelector('#index_standard_score_osc').innerText = arrIndexStandardScores[3].standard_score;
         } catch {
             throw Error("Promised failed");
         }
@@ -378,31 +422,77 @@ function calculateIndexStandardScore() {
 // function that fetches & calculates confidence intervals and updates DOM
 function calculateConfidenceInterval() {
     let table;
-    console.log(objScaledScores.subtest_2);
-    console.log(yearDiff);
 
     // determine DB table based on age
     if(yearDiff===9) {
         table = 'age9';
     }
 
-    console.log(table);
-
     // create an array of confidence intervals to fetch
-    const arrConfidenceIntervals = [
+    const arrConfidenceIntervalsFetch = [
         fetch(`http://localhost:3000/taps/ci/confidence_intervals_${table}`)
     ];
 
     // fetch confidence intervals for all subtests and indexes
     const fetchConfidenceIntervals = async() => {
         try {
-            const res = await Promise.all(arrConfidenceIntervals);
+            const res = await Promise.all(arrConfidenceIntervalsFetch);
             const resData = await Promise.all(res.map(r => r.json()));
-            console.log([...resData.flat()]);
+            let data = [...resData.flat()];
+            let i = 0;
+            for(const key in objConfidenceIntervals) {
+                objConfidenceIntervals[key] = data[i].confidence_interval_95;
+                i++;
+            }
+            
+            // update DOM with confidence intervals for sum of scaled scores
+            document.querySelector('#ppi_ci').innerText = `${Math.round(arrIndexStandardScores[0].standard_score - objConfidenceIntervals.ppi)} - ${Math.round(arrIndexStandardScores[0].standard_score + objConfidenceIntervals.ppi)}`;
+            document.querySelector('#ami_ci').innerText = `${Math.round(arrIndexStandardScores[1].standard_score - objConfidenceIntervals.ami)} - ${Math.round(arrIndexStandardScores[1].standard_score + objConfidenceIntervals.ami)}`;
+            document.querySelector('#lci_ci').innerText = `${Math.round(arrIndexStandardScores[2].standard_score - objConfidenceIntervals.lci)} - ${Math.round(arrIndexStandardScores[2].standard_score + objConfidenceIntervals.lci)}`;
+            document.querySelector('#osc_ci').innerText = `${Math.round(arrIndexStandardScores[3].standard_score - objConfidenceIntervals.osc)} - ${Math.round(arrIndexStandardScores[3].standard_score + objConfidenceIntervals.osc)}`;
         } catch {
             throw Error("Promised failed");
         }
     }
 
     fetchConfidenceIntervals();
+}
+
+// function that fetches index standard scores for individual subtests and updates DOM
+function calculateSubtestIndexStandardScore() {
+    // clear object to avoid DOM updates with old state
+    for(const key in objSubtestIndexStandardScores) {
+        delete objSubtestIndexStandardScores[key];
+    }
+
+    // create array of valid subtests to fetch
+    const arrSubtestIssFetch= [];
+    for(const subtest in objScaledScores) {
+        arrSubtestIssFetch.push(fetch(`http://localhost:3000/taps/subtestiss/${objScaledScores[subtest]}`));
+    }
+
+    // fetch index standard scores from subtests
+    const fetchSubtestIndexStandardScores = async() => {
+        try {
+            const res = await Promise.all(arrSubtestIssFetch);
+            const resData = await Promise.all(res.map(r => r.json()));
+            const arrResData = [...resData.flat()];
+
+            // places index standard scores for individual subtests into object
+            let i = 0;
+            for(const subtest in objScaledScores) {
+                objSubtestIndexStandardScores[subtest] = arrResData[i].standard_score;
+                i++;
+            }
+
+            // updates DOM with confidence intervals for individual subtests
+            for(const subtest in objSubtestIndexStandardScores) {
+                document.querySelector(`#${subtest}_ci`).innerText = `${Math.round(objSubtestIndexStandardScores[subtest] - objConfidenceIntervals[subtest])} - ${Math.round(objSubtestIndexStandardScores[subtest] + objConfidenceIntervals[subtest])}`;
+            }
+        } catch {
+            throw Error("Promised failed");
+        }
+    } 
+
+    fetchSubtestIndexStandardScores();
 }

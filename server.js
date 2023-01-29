@@ -63,3 +63,14 @@ app.get('/taps/ci/:table', (request, response) => {
         response.send(result);
     });
 });
+
+// get index standard scores for individual subtests
+app.get('/taps/subtestiss/:scaledScore', (request, response) => {
+    const scaledScore = request.params.scaledScore;
+    const sql = `SELECT standard_score FROM conversion_of_standard_scores WHERE scaled_score = ${scaledScore}`;
+
+    db.query(sql, (err, result) => {
+        if(err) throw err;
+        response.send(result);
+    });
+})
