@@ -162,6 +162,7 @@ function calculateScore() {
         document.querySelector('#subtest_2_ci').innerText = '-';
         document.querySelector('#ppi_ci').innerText = '-';
         document.querySelector('#osc_ci').innerText = '-';
+        document.querySelector('#overall_ppi_ci').innerText = '-';
     }
     if(document.querySelector('#subtest_3').value === '') {
         document.querySelector('#subtest_3').classList.add('alertRed');
@@ -176,6 +177,7 @@ function calculateScore() {
         document.querySelector('#subtest_3_ci').innerText = '-';
         document.querySelector('#ppi_ci').innerText = '-';
         document.querySelector('#osc_ci').innerText = '-';
+        document.querySelector('#overall_ppi_ci').innerText = '-';
     }
     if(document.querySelector('#subtest_4').value === '') {
         document.querySelector('#subtest_4').classList.add('alertRed');
@@ -190,6 +192,7 @@ function calculateScore() {
         document.querySelector('#subtest_4_ci').innerText = '-';
         document.querySelector('#ppi_ci').innerText = '-';
         document.querySelector('#osc_ci').innerText = '-';
+        document.querySelector('#overall_ppi_ci').innerText = '-';
     }
     if(document.querySelector('#subtest_7').value === '') {
         document.querySelector('#subtest_7').classList.add('alertRed');
@@ -204,6 +207,7 @@ function calculateScore() {
         document.querySelector('#subtest_7_ci').innerText = '-';
         document.querySelector('#ami_ci').innerText = '-';
         document.querySelector('#osc_ci').innerText = '-';
+        document.querySelector('#overall_ami_ci').innerText = '-';
     }
     if(document.querySelector('#subtest_9').value === '') {
         document.querySelector('#subtest_9').classList.add('alertRed');
@@ -218,6 +222,7 @@ function calculateScore() {
         document.querySelector('#subtest_9_ci').innerText = '-';
         document.querySelector('#ami_ci').innerText = '-';
         document.querySelector('#osc_ci').innerText = '-';
+        document.querySelector('#overall_ami_ci').innerText = '-';
     }
     if(document.querySelector('#subtest_10').value === '') {
         document.querySelector('#subtest_10').classList.add('alertRed');
@@ -232,6 +237,7 @@ function calculateScore() {
         document.querySelector('#subtest_10_ci').innerText = '-';
         document.querySelector('#ami_ci').innerText = '-';
         document.querySelector('#osc_ci').innerText = '-';
+        document.querySelector('#overall_ami_ci').innerText = '-';
     }
     if(document.querySelector('#subtest_1').value === '') {
         document.querySelector('#subtest_1').classList.add('alertRed');
@@ -246,6 +252,7 @@ function calculateScore() {
         document.querySelector('#subtest_1_ci').innerText = '-';
         document.querySelector('#lci_ci').innerText = '-';
         document.querySelector('#osc_ci').innerText = '-';
+        document.querySelector('#overall_lci_ci').innerText = '-';
     }
     if(document.querySelector('#subtest_11').value === '') {
         document.querySelector('#subtest_11').classList.add('alertRed');
@@ -260,6 +267,7 @@ function calculateScore() {
         document.querySelector('#subtest_11_ci').innerText = '-';
         document.querySelector('#lci_ci').innerText = '-';
         document.querySelector('#osc_ci').innerText = '-';
+        document.querySelector('#overall_lci_ci').innerText = '-';
     }
     if(
         document.querySelector('#subtest_2').value === '' ||
@@ -318,11 +326,26 @@ function calculateScore() {
             // if score is not in DB (null), set score to 'N/A'
             if(score===null) {
                 score = 'N/A';
+                console.log(subtest);
                 
-                // check if any scaled scores are 'N/A' and prompt user of error
+                // check if any scaled scores are 'N/A' and prompt user of error and clears DOM of invalid results
                 document.querySelector('#calculationError').innerText = 'Invalid Raw Score';
                 document.querySelector(`#${subtest}`).classList.add('alertRed');
                 document.querySelector(`#${subtest}`).addEventListener('change', function() { removeRed(`#${subtest}`)});
+                document.querySelector(`#${subtest}_ci`).innerText = '-';
+                if(subtest==='subtest_2' || subtest==='subtest_3' || subtest==='subtest_4') {
+                    document.querySelector('#overall_ppi_ci').innerText = '-';
+                    document.querySelector('#ppi_ci').innerText = '-';
+                    return;
+                }
+                // if(subtest==='subtest_1' || subtest==='subtest_11') {
+                //     document.querySelector('#overall_lci_ci').innerText = '-';
+                //     document.querySelector('#lci_ci').innerText = '-';
+                // }
+                if(subtest==='subtest_1' || subtest==='subtest_11') {
+                    document.querySelector('#overall_lci_ci').innerText = '-';
+                    document.querySelector('#lci_ci').innerText = '-';
+                }
             }
             document.querySelector(`#${subtest}_scaledScore`).innerText = score;
         });
@@ -381,8 +404,9 @@ function sumScaledScores() {
         document.querySelector('#index_standard_score_osc').innerText = '';
     }
 
-    calculateSubtestIndexStandardScore();
     calculateIndexStandardScore();
+    calculateSubtestIndexStandardScore();
+    calculateConfidenceInterval();
 }
 
 // function that fetches and updates DOM with Index Standard Score
@@ -416,7 +440,6 @@ function calculateIndexStandardScore() {
     }
 
     fetchIndexStandardScores();
-    calculateConfidenceInterval();
 }
 
 // function that fetches & calculates confidence intervals and updates DOM
@@ -447,8 +470,11 @@ function calculateConfidenceInterval() {
             
             // update DOM with confidence intervals for sum of scaled scores
             document.querySelector('#ppi_ci').innerText = `${Math.round(arrIndexStandardScores[0].standard_score - objConfidenceIntervals.ppi)} - ${Math.round(arrIndexStandardScores[0].standard_score + objConfidenceIntervals.ppi)}`;
+            document.querySelector('#overall_ppi_ci').innerText = `${Math.round(arrIndexStandardScores[0].standard_score - objConfidenceIntervals.ppi)} - ${Math.round(arrIndexStandardScores[0].standard_score + objConfidenceIntervals.ppi)}`;
             document.querySelector('#ami_ci').innerText = `${Math.round(arrIndexStandardScores[1].standard_score - objConfidenceIntervals.ami)} - ${Math.round(arrIndexStandardScores[1].standard_score + objConfidenceIntervals.ami)}`;
+            document.querySelector('#overall_ami_ci').innerText = `${Math.round(arrIndexStandardScores[1].standard_score - objConfidenceIntervals.ami)} - ${Math.round(arrIndexStandardScores[1].standard_score + objConfidenceIntervals.ami)}`;
             document.querySelector('#lci_ci').innerText = `${Math.round(arrIndexStandardScores[2].standard_score - objConfidenceIntervals.lci)} - ${Math.round(arrIndexStandardScores[2].standard_score + objConfidenceIntervals.lci)}`;
+            document.querySelector('#overall_lci_ci').innerText = `${Math.round(arrIndexStandardScores[2].standard_score - objConfidenceIntervals.lci)} - ${Math.round(arrIndexStandardScores[2].standard_score + objConfidenceIntervals.lci)}`;
             document.querySelector('#osc_ci').innerText = `${Math.round(arrIndexStandardScores[3].standard_score - objConfidenceIntervals.osc)} - ${Math.round(arrIndexStandardScores[3].standard_score + objConfidenceIntervals.osc)}`;
         } catch {
             throw Error("Promised failed");
