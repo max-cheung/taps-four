@@ -326,7 +326,6 @@ function calculateScore() {
             // if score is not in DB (null), set score to 'N/A'
             if(score===null) {
                 score = 'N/A';
-                console.log(subtest);
                 
                 // check if any scaled scores are 'N/A' and prompt user of error and clears DOM of invalid results
                 document.querySelector('#calculationError').innerText = 'Invalid Raw Score';
@@ -336,15 +335,17 @@ function calculateScore() {
                 if(subtest==='subtest_2' || subtest==='subtest_3' || subtest==='subtest_4') {
                     document.querySelector('#overall_ppi_ci').innerText = '-';
                     document.querySelector('#ppi_ci').innerText = '-';
-                    return;
+                    document.querySelector('#osc_ci').innerText = '-';
                 }
-                // if(subtest==='subtest_1' || subtest==='subtest_11') {
-                //     document.querySelector('#overall_lci_ci').innerText = '-';
-                //     document.querySelector('#lci_ci').innerText = '-';
-                // }
+                if(subtest==='subtest_7' || subtest==='subtest_9' || subtest==='subtest_10') {
+                    document.querySelector('#overall_ami_ci').innerText = '-';
+                    document.querySelector('#ami_ci').innerText = '-';
+                    document.querySelector('#osc_ci').innerText = '-';
+                }
                 if(subtest==='subtest_1' || subtest==='subtest_11') {
                     document.querySelector('#overall_lci_ci').innerText = '-';
                     document.querySelector('#lci_ci').innerText = '-';
+                    document.querySelector('#osc_ci').innerText = '-';
                 }
             }
             document.querySelector(`#${subtest}_scaledScore`).innerText = score;
@@ -469,19 +470,21 @@ function calculateConfidenceInterval() {
             }
             
             // update DOM with confidence intervals for sum of scaled scores
-            document.querySelector('#ppi_ci').innerText = `${Math.round(arrIndexStandardScores[0].standard_score - objConfidenceIntervals.ppi)} - ${Math.round(arrIndexStandardScores[0].standard_score + objConfidenceIntervals.ppi)}`;
-            document.querySelector('#overall_ppi_ci').innerText = `${Math.round(arrIndexStandardScores[0].standard_score - objConfidenceIntervals.ppi)} - ${Math.round(arrIndexStandardScores[0].standard_score + objConfidenceIntervals.ppi)}`;
-            document.querySelector('#ami_ci').innerText = `${Math.round(arrIndexStandardScores[1].standard_score - objConfidenceIntervals.ami)} - ${Math.round(arrIndexStandardScores[1].standard_score + objConfidenceIntervals.ami)}`;
-            document.querySelector('#overall_ami_ci').innerText = `${Math.round(arrIndexStandardScores[1].standard_score - objConfidenceIntervals.ami)} - ${Math.round(arrIndexStandardScores[1].standard_score + objConfidenceIntervals.ami)}`;
-            document.querySelector('#lci_ci').innerText = `${Math.round(arrIndexStandardScores[2].standard_score - objConfidenceIntervals.lci)} - ${Math.round(arrIndexStandardScores[2].standard_score + objConfidenceIntervals.lci)}`;
-            document.querySelector('#overall_lci_ci').innerText = `${Math.round(arrIndexStandardScores[2].standard_score - objConfidenceIntervals.lci)} - ${Math.round(arrIndexStandardScores[2].standard_score + objConfidenceIntervals.lci)}`;
-            document.querySelector('#osc_ci').innerText = `${Math.round(arrIndexStandardScores[3].standard_score - objConfidenceIntervals.osc)} - ${Math.round(arrIndexStandardScores[3].standard_score + objConfidenceIntervals.osc)}`;
+            if(arrIndexStandardScores.length===4) {
+                document.querySelector('#ppi_ci').innerText = `${Math.round(arrIndexStandardScores[0].standard_score - objConfidenceIntervals.ppi)} - ${Math.round(arrIndexStandardScores[0].standard_score + objConfidenceIntervals.ppi)}`;
+                document.querySelector('#overall_ppi_ci').innerText = `${Math.round(arrIndexStandardScores[0].standard_score - objConfidenceIntervals.ppi)} - ${Math.round(arrIndexStandardScores[0].standard_score + objConfidenceIntervals.ppi)}`;
+                document.querySelector('#ami_ci').innerText = `${Math.round(arrIndexStandardScores[1].standard_score - objConfidenceIntervals.ami)} - ${Math.round(arrIndexStandardScores[1].standard_score + objConfidenceIntervals.ami)}`;
+                document.querySelector('#overall_ami_ci').innerText = `${Math.round(arrIndexStandardScores[1].standard_score - objConfidenceIntervals.ami)} - ${Math.round(arrIndexStandardScores[1].standard_score + objConfidenceIntervals.ami)}`;
+                document.querySelector('#lci_ci').innerText = `${Math.round(arrIndexStandardScores[2].standard_score - objConfidenceIntervals.lci)} - ${Math.round(arrIndexStandardScores[2].standard_score + objConfidenceIntervals.lci)}`;
+                document.querySelector('#overall_lci_ci').innerText = `${Math.round(arrIndexStandardScores[2].standard_score - objConfidenceIntervals.lci)} - ${Math.round(arrIndexStandardScores[2].standard_score + objConfidenceIntervals.lci)}`;
+                document.querySelector('#osc_ci').innerText = `${Math.round(arrIndexStandardScores[3].standard_score - objConfidenceIntervals.osc)} - ${Math.round(arrIndexStandardScores[3].standard_score + objConfidenceIntervals.osc)}`;
+            }
         } catch {
             throw Error("Promised failed");
         }
     }
 
-    fetchConfidenceIntervals();
+    fetchConfidenceIntervals()
 }
 
 // function that fetches index standard scores for individual subtests and updates DOM
