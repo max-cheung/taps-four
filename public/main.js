@@ -437,9 +437,6 @@ function calculateIndexStandardScore() {
             const res = await Promise.all(arrSumScaledScore);
             const resData = await Promise.all(res.map(r => r.json()));
             arrIndexStandardScores.push(...resData.flat());
-            if(arrIndexStandardScores.length !== 4) {
-                return;
-            }
 
             // input index standard scores from fetch into the DOM
             document.querySelector('#index_standard_score_ppi').innerText = arrIndexStandardScores[0].standard_score;
