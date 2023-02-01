@@ -61,6 +61,17 @@ function calculateAge() {
     dayDiff = Math.floor(ageInDays%365%30.4167);
     monthDiff = Math.floor(ageInDays%365/30.4167);
     yearDiff = Math.floor(ageInDays/365);
+
+    // displays error if age is less than 5 or greater than 21
+    if(yearDiff<5 || yearDiff>21) {
+        dayDiff = undefined;
+        monthDiff = undefined;
+        yearDiff = undefined;
+        
+        //displays error if birthDate comes after testDate
+        document.querySelector('#ageResult').classList.add('alertText');
+        return document.querySelector('#ageResult').innerText = `Chronological Age: Age cannot be less than 5 or greater than 21`;
+    }
     
     // removes alertText and prints valid Chronological Age in the DOM
     document.querySelector('#ageResult').classList.remove('alertText');
@@ -448,9 +459,41 @@ function calculateConfidenceInterval() {
     let table;
 
     // determine DB table based on age
-    if(yearDiff===9) {
+    if(yearDiff===5) {
+        table = 'age5';
+    } else if(yearDiff===6) {
+        table = 'age6';
+    } else if(yearDiff===7) {
+        table = 'age7';
+    } else if(yearDiff===8) {
+        table = 'age8';
+    } else if(yearDiff===9) {
         table = 'age9';
-    }
+    } else if(yearDiff===10) {
+        table = 'age10';
+    } else if(yearDiff===11) {
+        table = 'age11';
+    } else if(yearDiff===12) {
+        table = 'age12';
+    } else if(yearDiff===13) {
+        table = 'age13';
+    } else if(yearDiff===14) {
+        table = 'age14';
+    } else if(yearDiff===15) {
+        table = 'age15';
+    } else if(yearDiff===16) {
+        table = 'age16';
+    } else if(yearDiff===17) {
+        table = 'age17';
+    } else if(yearDiff===18) {
+        table = 'age18';
+    } else if(yearDiff===19) {
+        table = 'age19';
+    } else if(yearDiff===20) {
+        table = 'age20';
+    } else if(yearDiff===21) {
+        table = 'age21';
+    } 
 
     // create an array of confidence intervals to fetch
     const arrConfidenceIntervalsFetch = [
