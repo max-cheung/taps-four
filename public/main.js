@@ -29,6 +29,7 @@ let objConfidenceIntervals = {
     lci : undefined,
     osc : undefined,
 };
+let objSubtestPercentileRanks = {};
 
 // function to remove 'alertRed' class from highlighted missing fields
 function removeRed(subtest) {
@@ -174,6 +175,10 @@ function calculateScore() {
         document.querySelector('#ppi_ci').innerText = '-';
         document.querySelector('#osc_ci').innerText = '-';
         document.querySelector('#overall_ppi_ci').innerText = '-';
+        document.querySelector('#subtest_2_pr').innerText = '';
+        document.querySelector('#ppi_pr').innerText = '';
+        document.querySelector('#overall_ppi_pr').innerText = '';
+        document.querySelector('#osc_pr').innerText = '';
     }
     if(document.querySelector('#subtest_3').value === '') {
         document.querySelector('#subtest_3').classList.add('alertRed');
@@ -189,6 +194,10 @@ function calculateScore() {
         document.querySelector('#ppi_ci').innerText = '-';
         document.querySelector('#osc_ci').innerText = '-';
         document.querySelector('#overall_ppi_ci').innerText = '-';
+        document.querySelector('#subtest_3_pr').innerText = '';
+        document.querySelector('#ppi_pr').innerText = '';
+        document.querySelector('#overall_ppi_pr').innerText = '';
+        document.querySelector('#osc_pr').innerText = '';
     }
     if(document.querySelector('#subtest_4').value === '') {
         document.querySelector('#subtest_4').classList.add('alertRed');
@@ -204,6 +213,10 @@ function calculateScore() {
         document.querySelector('#ppi_ci').innerText = '-';
         document.querySelector('#osc_ci').innerText = '-';
         document.querySelector('#overall_ppi_ci').innerText = '-';
+        document.querySelector('#subtest_4_pr').innerText = '';
+        document.querySelector('#ppi_pr').innerText = '';
+        document.querySelector('#overall_ppi_pr').innerText = '';
+        document.querySelector('#osc_pr').innerText = '';
     }
     if(document.querySelector('#subtest_7').value === '') {
         document.querySelector('#subtest_7').classList.add('alertRed');
@@ -219,6 +232,10 @@ function calculateScore() {
         document.querySelector('#ami_ci').innerText = '-';
         document.querySelector('#osc_ci').innerText = '-';
         document.querySelector('#overall_ami_ci').innerText = '-';
+        document.querySelector('#subtest_7_pr').innerText = '';
+        document.querySelector('#ami_pr').innerText = '';
+        document.querySelector('#overall_ami_pr').innerText = '';
+        document.querySelector('#osc_pr').innerText = '';
     }
     if(document.querySelector('#subtest_9').value === '') {
         document.querySelector('#subtest_9').classList.add('alertRed');
@@ -234,6 +251,10 @@ function calculateScore() {
         document.querySelector('#ami_ci').innerText = '-';
         document.querySelector('#osc_ci').innerText = '-';
         document.querySelector('#overall_ami_ci').innerText = '-';
+        document.querySelector('#subtest_9_pr').innerText = '';
+        document.querySelector('#ami_pr').innerText = '';
+        document.querySelector('#overall_ami_pr').innerText = '';
+        document.querySelector('#osc_pr').innerText = '';
     }
     if(document.querySelector('#subtest_10').value === '') {
         document.querySelector('#subtest_10').classList.add('alertRed');
@@ -249,6 +270,10 @@ function calculateScore() {
         document.querySelector('#ami_ci').innerText = '-';
         document.querySelector('#osc_ci').innerText = '-';
         document.querySelector('#overall_ami_ci').innerText = '-';
+        document.querySelector('#subtest_10_pr').innerText = '';
+        document.querySelector('#ami_pr').innerText = '';
+        document.querySelector('#overall_ami_pr').innerText = '';
+        document.querySelector('#osc_pr').innerText = '';
     }
     if(document.querySelector('#subtest_1').value === '') {
         document.querySelector('#subtest_1').classList.add('alertRed');
@@ -264,6 +289,10 @@ function calculateScore() {
         document.querySelector('#lci_ci').innerText = '-';
         document.querySelector('#osc_ci').innerText = '-';
         document.querySelector('#overall_lci_ci').innerText = '-';
+        document.querySelector('#subtest_1_pr').innerText = '';
+        document.querySelector('#lci_pr').innerText = '';
+        document.querySelector('#overall_lci_pr').innerText = '';
+        document.querySelector('#osc_pr').innerText = '';
     }
     if(document.querySelector('#subtest_11').value === '') {
         document.querySelector('#subtest_11').classList.add('alertRed');
@@ -279,6 +308,10 @@ function calculateScore() {
         document.querySelector('#lci_ci').innerText = '-';
         document.querySelector('#osc_ci').innerText = '-';
         document.querySelector('#overall_lci_ci').innerText = '-';
+        document.querySelector('#subtest_11_pr').innerText = '';
+        document.querySelector('#lci_pr').innerText = '';
+        document.querySelector('#overall_lci_pr').innerText = '';
+        document.querySelector('#osc_pr').innerText = '';
     }
     if(
         document.querySelector('#subtest_2').value === '' ||
@@ -316,7 +349,8 @@ function calculateScore() {
         } else {
             // resets DOM to blank if raw score is not greater than or equal to 0 for subtests 5, 8 and 6
             document.querySelector(`#${subtest}_scaledScore`).innerText = '';
-            document.querySelector(`#${subtest}_ci`).innerText = '';
+            document.querySelector(`#${subtest}_ci`).innerText = '-';
+            document.querySelector(`#${subtest}_pr`).innerText = '';
         }
     }
     
@@ -343,20 +377,30 @@ function calculateScore() {
                 document.querySelector(`#${subtest}`).classList.add('alertRed');
                 document.querySelector(`#${subtest}`).addEventListener('change', function() { removeRed(`#${subtest}`)});
                 document.querySelector(`#${subtest}_ci`).innerText = '-';
+                document.querySelector(`#${subtest}_pr`).innerText = '';
                 if(subtest==='subtest_2' || subtest==='subtest_3' || subtest==='subtest_4') {
                     document.querySelector('#overall_ppi_ci').innerText = '-';
+                    document.querySelector('#overall_ppi_pr').innerText = '';
                     document.querySelector('#ppi_ci').innerText = '-';
+                    document.querySelector('#ppi_pr').innerText = '';
                     document.querySelector('#osc_ci').innerText = '-';
+                    document.querySelector('#osc_pr').innerText = '';
                 }
                 if(subtest==='subtest_7' || subtest==='subtest_9' || subtest==='subtest_10') {
                     document.querySelector('#overall_ami_ci').innerText = '-';
+                    document.querySelector('#overall_ami_pr').innerText = '';
                     document.querySelector('#ami_ci').innerText = '-';
+                    document.querySelector('#ami_pr').innerText = '';
                     document.querySelector('#osc_ci').innerText = '-';
+                    document.querySelector('#osc_pr').innerText = '';
                 }
                 if(subtest==='subtest_1' || subtest==='subtest_11') {
                     document.querySelector('#overall_lci_ci').innerText = '-';
+                    document.querySelector('#overall_lci_pr').innerText = '';
                     document.querySelector('#lci_ci').innerText = '-';
+                    document.querySelector('#lci_pr').innerText = '';
                     document.querySelector('#osc_ci').innerText = '-';
+                    document.querySelector('#osc_pr').innerText = '';
                 }
             }
             document.querySelector(`#${subtest}_scaledScore`).innerText = score;
@@ -366,6 +410,10 @@ function calculateScore() {
         arrScaledScores.forEach((ele) => {
             objScaledScores[Object.keys(ele)[0]] = Object.values(ele)[0];
         });
+
+        // run function that calculates percentile rank
+        calculateSubtestPercentileRank();
+
         callBackFn();
     }
 
@@ -439,13 +487,17 @@ function calculateIndexStandardScore() {
             arrIndexStandardScores.push(...resData.flat());
 
             // input index standard scores from fetch into the DOM
-            document.querySelector('#index_standard_score_ppi').innerText = arrIndexStandardScores[0].standard_score;
-            document.querySelector('#index_standard_score_ami').innerText = arrIndexStandardScores[1].standard_score;
-            document.querySelector('#index_standard_score_lci').innerText = arrIndexStandardScores[2].standard_score;
-            document.querySelector('#index_standard_score_osc').innerText = arrIndexStandardScores[3].standard_score;
+            if(arrIndexStandardScores.length===4) {
+                document.querySelector('#index_standard_score_ppi').innerText = arrIndexStandardScores[0].standard_score;
+                document.querySelector('#index_standard_score_ami').innerText = arrIndexStandardScores[1].standard_score;
+                document.querySelector('#index_standard_score_lci').innerText = arrIndexStandardScores[2].standard_score;
+                document.querySelector('#index_standard_score_osc').innerText = arrIndexStandardScores[3].standard_score;
+            }
         } catch {
             throw Error("Promised failed");
         }
+        // calculate indexes percentile rank
+        calculateIndexPercentileRank();
     }
 
     fetchIndexStandardScores();
@@ -535,7 +587,7 @@ function calculateSubtestIndexStandardScore() {
     }
 
     // create array of valid subtests to fetch
-    const arrSubtestIssFetch= [];
+    const arrSubtestIssFetch = [];
     for(const subtest in objScaledScores) {
         arrSubtestIssFetch.push(fetch(`http://localhost:3000/taps/subtestiss/${objScaledScores[subtest]}`));
     }
@@ -564,4 +616,77 @@ function calculateSubtestIndexStandardScore() {
     } 
 
     fetchSubtestIndexStandardScores();
+}
+
+// function that fetches percentile rank for subtests and updates the DOM
+function calculateSubtestPercentileRank() {
+    // clear object to avoid DOM updates with old state
+    for(const key in objSubtestPercentileRanks) {
+        delete objSubtestPercentileRanks[key];
+    }
+
+    // create an array of valid subtests to fetch (using same array as calculateSubtestIndexStandardScore)
+    const arrSubtestPercentileRankFetch = [];
+    for(const subtest in objScaledScores) {
+        arrSubtestPercentileRankFetch.push(fetch(`http://localhost:3000/taps/subtestpr/${objScaledScores[subtest]}`));
+    }
+    
+    // fetch percentile rank from subtests
+    const fetchSubtestPercentileRank = async() => {
+        try {
+            const res = await Promise.all(arrSubtestPercentileRankFetch);
+            const resData = await Promise.all(res.map(r => r.json()));
+            const arrResData = [...resData.flat()];
+
+            // places percentile ranks for individual subtests in object
+            let i = 0;
+            for(const subtest in objScaledScores) {
+                objSubtestPercentileRanks[subtest] = arrResData[i].percentile_rank;
+                i++;
+            }
+
+            // updates DOM with percentile ranks for individual subtests
+            for(const subtest in objSubtestPercentileRanks) {
+                document.querySelector(`#${subtest}_pr`).innerText = objSubtestPercentileRanks[subtest];
+            }
+
+        } catch {
+            throw Error("Promised failed");
+        }
+    }
+
+    fetchSubtestPercentileRank();
+}
+
+// function that fetches percentile rank for indexes and updates DOM
+function calculateIndexPercentileRank() {
+    // create an array of valid index standard scores to fetch percentile ranks (using same array as calculateIndexStandardScore)
+    const arrIndexPercentileRankFetch = [];
+    arrIndexStandardScores.forEach(ele => {
+        arrIndexPercentileRankFetch.push(fetch(`http://localhost:3000/taps/indexpr/${ele.standard_score}`));
+    })
+
+    // fetch percentile rank from index standard scores
+    const fetchIndexPercentileRank = async() => {
+        try {
+            const res = await Promise.all(arrIndexPercentileRankFetch);
+            const resData = await Promise.all(res.map(r => r.json()));
+            const arrResData = [...resData.flat()];
+
+            // updates DOM with percentile ranks for indexes
+            if(arrIndexStandardScores.length===4) {
+                document.querySelector('#ppi_pr').innerText = arrResData[0].percentile_rank;
+                document.querySelector('#overall_ppi_pr').innerText = arrResData[0].percentile_rank;
+                document.querySelector('#ami_pr').innerText = arrResData[1].percentile_rank;
+                document.querySelector('#overall_ami_pr').innerText = arrResData[1].percentile_rank;
+                document.querySelector('#lci_pr').innerText = arrResData[2].percentile_rank;
+                document.querySelector('#overall_lci_pr').innerText = arrResData[2].percentile_rank;
+                document.querySelector('#osc_pr').innerText = arrResData[3].percentile_rank;
+            }
+        } catch {
+            throw Error("Promised failed");
+        }
+    }
+
+    fetchIndexPercentileRank();
 }

@@ -74,3 +74,25 @@ app.get('/taps/subtestiss/:scaledScore', (request, response) => {
         response.send(result);
     });
 })
+
+// get percentile rank for individual subtests
+app.get('/taps/subtestpr/:scaledScore', (request, response) => {
+    const scaledScore = request.params.scaledScore;
+    const sql = `SELECT percentile_rank FROM conversion_of_standard_scores WHERE scaled_score = ${scaledScore}`;
+
+    db.query(sql, (err, result) => {
+        if(err) throw err;
+        response.send(result);
+    });
+})
+
+// get percentile rank for indexes
+app.get('/taps/indexpr/:standardScore', (request, response) => {
+    const standardScore = request.params.standardScore;
+    const sql = `SELECT percentile_rank FROM conversion_of_standard_scores_percentile_rank WHERE standard_score = ${standardScore}`;
+
+    db.query(sql, (err, result) => {
+        if(err) throw err;
+        response.send(result);
+    })
+})
