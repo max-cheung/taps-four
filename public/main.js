@@ -30,6 +30,7 @@ let objConfidenceIntervals = {
     osc : undefined,
 };
 let objSubtestPercentileRanks = {};
+let subtestRawScores;
 
 // function to remove 'alertRed' class from highlighted missing fields
 function removeRed(subtest) {
@@ -327,7 +328,7 @@ function calculateScore() {
     }
 
     // undefined prevents ''>=0 === true and creating fetch array with invalid input below
-    const subtestRawScores = {
+    subtestRawScores = {
         subtest_1 : document.querySelector('#subtest_1').value!=='' ? Number(document.querySelector('#subtest_1').value) : undefined,
         subtest_2 : document.querySelector('#subtest_2').value!=='' ? Number(document.querySelector('#subtest_2').value) : undefined,
         subtest_3 : document.querySelector('#subtest_3').value!=='' ? Number(document.querySelector('#subtest_3').value) : undefined,
@@ -353,7 +354,7 @@ function calculateScore() {
             document.querySelector(`#${subtest}_pr`).innerText = '';
         }
     }
-    
+
     // fetches fields that contain raw scores
     const fetchScores = async(callBackFn) => {
         try {
@@ -419,6 +420,9 @@ function calculateScore() {
 
     // runs the fetchScores function
     fetchScores(sumScaledScores);
+
+    // runs calculateSubtestAgeEquivalent function
+    calculateSubtestAgeEquivalent();
 }
 
 // function that sums scaled scores and updates the DOM
@@ -689,4 +693,40 @@ function calculateIndexPercentileRank() {
     }
 
     fetchIndexPercentileRank();
+}
+
+// function that fetches age equivalents for subtests and updates DOM
+function calculateSubtestAgeEquivalent() {
+    // create an array of valid raw scores to fetch age equivalents (using same array as calculateIndexStandardScore)
+    const arrSubtestAgeEquivalentFetch = [];
+    for(const subtest in subtestRawScores) {
+        if(subtestRawScores[subtest]>=0) {
+            arrSubtestAgeEquivalentFetch.push(fetch(`http://localhost:3000/taps/subtestae/${subtest}/${subtestRawScores[subtest]}`));
+        }
+    }
+
+    // fetch age equivalents for subtests
+    const fetchSubtestAgeEquivalent = async() => {
+        try {
+            const res = await Promise.all(arrSubtestAgeEquivalentFetch);
+            const resData = await Promise.all(res.map(r => r.json()));
+            const arrResData = [...resData.flat()];
+
+            // place age equivalents for individual subtests into object for ease of access
+            const objSubtestAgeEquivalents = {};
+
+            arrResData.forEach(ele => {
+                objSubtestAgeEquivalents[Object.keys(ele)[0]] = Object.values(ele)[0];
+            })
+
+            // update DOM with age equivalents for individual subtests;
+            console.log(objSubtestAgeEquivalents);
+
+
+        } catch {
+            throw Error("Promised failed");
+        }
+    }
+
+    fetchSubtestAgeEquivalent();
 }

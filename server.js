@@ -96,3 +96,15 @@ app.get('/taps/indexpr/:standardScore', (request, response) => {
         response.send(result);
     })
 })
+
+// get age equivalent for subtests
+app.get('/taps/subtestae/:subtest/:rawScore', (request, response) => {
+    const rawScore = request.params.rawScore;
+    const subtest = request.params.subtest;
+    const sql = `SELECT ${subtest} FROM subtest_age_equivalent WHERE raw_score = ${rawScore}`;
+
+    db.query(sql, (err, result) => {
+        if(err) throw err;
+        response.send(result);
+    })
+})
