@@ -108,3 +108,15 @@ app.get('/taps/subtestae/:subtest/:rawScore', (request, response) => {
         response.send(result);
     })
 })
+
+// get age equivalent for indexes
+app.get('/taps/indexae/:index/:sumRawScore', (request, response) => {
+    const sumRawScore = request.params.sumRawScore;
+    const index = request.params.index;
+    const sql = `SELECT ${index} FROM index_age_equivalent WHERE raw_score = ${sumRawScore}`;
+
+    db.query(sql, (err, result) => {
+        if(err) throw err;
+        response.send(result);
+    })
+})

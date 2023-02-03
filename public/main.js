@@ -180,6 +180,10 @@ function calculateScore() {
         document.querySelector('#ppi_pr').innerText = '';
         document.querySelector('#overall_ppi_pr').innerText = '';
         document.querySelector('#osc_pr').innerText = '';
+        document.querySelector('#subtest_2_ae').innerText = '';
+        document.querySelector('#ppi_ae').innerText = '';
+        document.querySelector('#overall_ppi_ae').innerText = '';
+        document.querySelector('#osc_ae').innerText = '';
     }
     if(document.querySelector('#subtest_3').value === '') {
         document.querySelector('#subtest_3').classList.add('alertRed');
@@ -199,6 +203,10 @@ function calculateScore() {
         document.querySelector('#ppi_pr').innerText = '';
         document.querySelector('#overall_ppi_pr').innerText = '';
         document.querySelector('#osc_pr').innerText = '';
+        document.querySelector('#subtest_3_ae').innerText = '';
+        document.querySelector('#ppi_ae').innerText = '';
+        document.querySelector('#overall_ppi_ae').innerText = '';
+        document.querySelector('#osc_ae').innerText = '';
     }
     if(document.querySelector('#subtest_4').value === '') {
         document.querySelector('#subtest_4').classList.add('alertRed');
@@ -218,6 +226,10 @@ function calculateScore() {
         document.querySelector('#ppi_pr').innerText = '';
         document.querySelector('#overall_ppi_pr').innerText = '';
         document.querySelector('#osc_pr').innerText = '';
+        document.querySelector('#subtest_4_ae').innerText = '';
+        document.querySelector('#ppi_ae').innerText = '';
+        document.querySelector('#overall_ppi_ae').innerText = '';
+        document.querySelector('#osc_ae').innerText = '';
     }
     if(document.querySelector('#subtest_7').value === '') {
         document.querySelector('#subtest_7').classList.add('alertRed');
@@ -237,6 +249,10 @@ function calculateScore() {
         document.querySelector('#ami_pr').innerText = '';
         document.querySelector('#overall_ami_pr').innerText = '';
         document.querySelector('#osc_pr').innerText = '';
+        document.querySelector('#subtest_7_ae').innerText = '';
+        document.querySelector('#ami_ae').innerText = '';
+        document.querySelector('#overall_ami_ae').innerText = '';
+        document.querySelector('#osc_ae').innerText = '';
     }
     if(document.querySelector('#subtest_9').value === '') {
         document.querySelector('#subtest_9').classList.add('alertRed');
@@ -256,6 +272,10 @@ function calculateScore() {
         document.querySelector('#ami_pr').innerText = '';
         document.querySelector('#overall_ami_pr').innerText = '';
         document.querySelector('#osc_pr').innerText = '';
+        document.querySelector('#subtest_9_ae').innerText = '';
+        document.querySelector('#ami_ae').innerText = '';
+        document.querySelector('#overall_ami_ae').innerText = '';
+        document.querySelector('#osc_ae').innerText = '';
     }
     if(document.querySelector('#subtest_10').value === '') {
         document.querySelector('#subtest_10').classList.add('alertRed');
@@ -275,6 +295,10 @@ function calculateScore() {
         document.querySelector('#ami_pr').innerText = '';
         document.querySelector('#overall_ami_pr').innerText = '';
         document.querySelector('#osc_pr').innerText = '';
+        document.querySelector('#subtest_10_ae').innerText = '';
+        document.querySelector('#ami_ae').innerText = '';
+        document.querySelector('#overall_ami_ae').innerText = '';
+        document.querySelector('#osc_ae').innerText = '';
     }
     if(document.querySelector('#subtest_1').value === '') {
         document.querySelector('#subtest_1').classList.add('alertRed');
@@ -294,6 +318,10 @@ function calculateScore() {
         document.querySelector('#lci_pr').innerText = '';
         document.querySelector('#overall_lci_pr').innerText = '';
         document.querySelector('#osc_pr').innerText = '';
+        document.querySelector('#subtest_1_ae').innerText = '';
+        document.querySelector('#lci_ae').innerText = '';
+        document.querySelector('#overall_lci_ae').innerText = '';
+        document.querySelector('#osc_ae').innerText = '';
     }
     if(document.querySelector('#subtest_11').value === '') {
         document.querySelector('#subtest_11').classList.add('alertRed');
@@ -313,6 +341,10 @@ function calculateScore() {
         document.querySelector('#lci_pr').innerText = '';
         document.querySelector('#overall_lci_pr').innerText = '';
         document.querySelector('#osc_pr').innerText = '';
+        document.querySelector('#subtest_11_ae').innerText = '';
+        document.querySelector('#lci_ae').innerText = '';
+        document.querySelector('#overall_lci_ae').innerText = '';
+        document.querySelector('#osc_ae').innerText = '';
     }
     if(
         document.querySelector('#subtest_2').value === '' ||
@@ -352,6 +384,7 @@ function calculateScore() {
             document.querySelector(`#${subtest}_scaledScore`).innerText = '';
             document.querySelector(`#${subtest}_ci`).innerText = '-';
             document.querySelector(`#${subtest}_pr`).innerText = '';
+            document.querySelector(`#${subtest}_ae`).innerText = '';
         }
     }
 
@@ -382,26 +415,35 @@ function calculateScore() {
                 if(subtest==='subtest_2' || subtest==='subtest_3' || subtest==='subtest_4') {
                     document.querySelector('#overall_ppi_ci').innerText = '-';
                     document.querySelector('#overall_ppi_pr').innerText = '';
+                    document.querySelector('#overall_ppi_ae').innerText = '';
                     document.querySelector('#ppi_ci').innerText = '-';
                     document.querySelector('#ppi_pr').innerText = '';
+                    document.querySelector('#ppi_ae').innerText = '';
                     document.querySelector('#osc_ci').innerText = '-';
                     document.querySelector('#osc_pr').innerText = '';
+                    document.querySelector('#osc_ae').innerText = '';
                 }
                 if(subtest==='subtest_7' || subtest==='subtest_9' || subtest==='subtest_10') {
                     document.querySelector('#overall_ami_ci').innerText = '-';
                     document.querySelector('#overall_ami_pr').innerText = '';
+                    document.querySelector('#overall_ami_ae').innerText = '';
                     document.querySelector('#ami_ci').innerText = '-';
                     document.querySelector('#ami_pr').innerText = '';
+                    document.querySelector('#ami_ae').innerText = '';
                     document.querySelector('#osc_ci').innerText = '-';
                     document.querySelector('#osc_pr').innerText = '';
+                    document.querySelector('#osc_ae').innerText = '';
                 }
                 if(subtest==='subtest_1' || subtest==='subtest_11') {
                     document.querySelector('#overall_lci_ci').innerText = '-';
                     document.querySelector('#overall_lci_pr').innerText = '';
+                    document.querySelector('#overall_lci_ae').innerText = '';
                     document.querySelector('#lci_ci').innerText = '-';
                     document.querySelector('#lci_pr').innerText = '';
+                    document.querySelector('#lci_ae').innerText = '';
                     document.querySelector('#osc_ci').innerText = '-';
                     document.querySelector('#osc_pr').innerText = '';
+                    document.querySelector('#osc_ae').innerText = '';
                 }
             }
             document.querySelector(`#${subtest}_scaledScore`).innerText = score;
@@ -502,6 +544,10 @@ function calculateIndexStandardScore() {
         }
         // calculate indexes percentile rank
         calculateIndexPercentileRank();
+
+        // calculate indexes age equivalents
+        calculateIndexAgeEquivalent();
+
     }
 
     fetchIndexStandardScores();
@@ -697,7 +743,7 @@ function calculateIndexPercentileRank() {
 
 // function that fetches age equivalents for subtests and updates DOM
 function calculateSubtestAgeEquivalent() {
-    // create an array of valid raw scores to fetch age equivalents (using same array as calculateIndexStandardScore)
+    // create an array of valid raw scores to fetch age equivalents 
     const arrSubtestAgeEquivalentFetch = [];
     for(const subtest in subtestRawScores) {
         if(subtestRawScores[subtest]>=0) {
@@ -720,13 +766,53 @@ function calculateSubtestAgeEquivalent() {
             })
 
             // update DOM with age equivalents for individual subtests;
-            console.log(objSubtestAgeEquivalents);
-
-
+            for(const subtest in objSubtestAgeEquivalents) {
+                document.querySelector(`#${subtest}_ae`).innerText = objSubtestAgeEquivalents[subtest];
+            }
         } catch {
             throw Error("Promised failed");
         }
     }
 
     fetchSubtestAgeEquivalent();
+}
+
+// function that fetches age equivalents for indexes and updates DOM
+function calculateIndexAgeEquivalent() {
+    // calculate sum of index's raw scores
+    const ppiSumRawScore = subtestRawScores.subtest_2 + subtestRawScores.subtest_3 + subtestRawScores.subtest_4; 
+    const amiSumRawScore = subtestRawScores.subtest_7 + subtestRawScores.subtest_9 + subtestRawScores.subtest_10; 
+    const lciSumRawScore = subtestRawScores.subtest_1 + subtestRawScores.subtest_11;
+    const oscSumRawScore = ppiSumRawScore + amiSumRawScore + lciSumRawScore;
+
+    // create an array of valid index sums to fetch age equivalents 
+    const arrIndexSumRawScoreFetch = [
+        fetch(`http://localhost:3000/taps/indexae/ppi/${ppiSumRawScore}`),
+        fetch(`http://localhost:3000/taps/indexae/ami/${amiSumRawScore}`),
+        fetch(`http://localhost:3000/taps/indexae/lci/${lciSumRawScore}`),
+        fetch(`http://localhost:3000/taps/indexae/osc/${oscSumRawScore}`),
+    ]
+
+    // fetch age equivalents for indexes
+    const fetchIndexAgeEquivalent = async() => {
+        try {
+            const res = await Promise.all(arrIndexSumRawScoreFetch);
+            const resData = await Promise.all(res.map(r => r.json()));
+            const arrResData = [...resData.flat()];
+
+            if(arrIndexStandardScores.length===4) {
+                document.querySelector('#ppi_ae').innerText = arrResData[0].ppi;
+                document.querySelector('#overall_ppi_ae').innerText = arrResData[0].ppi;
+                document.querySelector('#ami_ae').innerText = arrResData[1].ami;
+                document.querySelector('#overall_ami_ae').innerText = arrResData[1].ami;
+                document.querySelector('#lci_ae').innerText = arrResData[2].lci;
+                document.querySelector('#overall_lci_ae').innerText = arrResData[2].lci;
+                document.querySelector('#osc_ae').innerText = arrResData[3].osc;
+            }
+        } catch {
+            throw Error("Promised failed");
+        }
+    }
+
+    fetchIndexAgeEquivalent();
 }
