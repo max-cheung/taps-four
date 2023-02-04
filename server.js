@@ -1,12 +1,12 @@
+require('dotenv').config();
 const express = require('express');
 const mysql = require('mysql');
 const app = express();
-const PORT = 3000;
 
 app.use(express.static('public'));
 
 app.listen(process.env.PORT || PORT, function() {
-    console.log('Listening on port 3000');
+    console.log(`Listening on port ${process.env.PORT}`);
 })
 
 app.get('/', (request, response) => {
