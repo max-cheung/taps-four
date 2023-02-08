@@ -14,11 +14,11 @@ app.get('/', (request, response) => {
 })
 
 const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'max',
-    password: 'max321',
-    database: 'taps',
-    port: '/tmp/mysql.sock'
+    host: process.env.HOST,
+    user: process.env.MYSQLUSER,
+    password: process.env.PASSWORD,
+    database: process.env.DATABASE,
+    port: process.env.MYSQLPORT
 });
 
 db.connect((err) => {
