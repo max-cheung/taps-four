@@ -378,7 +378,7 @@ function calculateScore() {
     const subtestRawScoresFetchArr = [];
     for(const subtest in subtestRawScores) {
         if(subtestRawScores[subtest]>=0) {
-            subtestRawScoresFetchArr.push(fetch(`http://localhost:3000/taps/ss/${table}/${subtest}/${subtestRawScores[subtest]}`));
+            subtestRawScoresFetchArr.push(fetch(`/taps/ss/${table}/${subtest}/${subtestRawScores[subtest]}`));
         } else {
             // resets DOM to blank if raw score is not greater than or equal to 0 for subtests 5, 8 and 6
             document.querySelector(`#${subtest}_scaledScore`).innerText = '';
@@ -519,10 +519,10 @@ function sumScaledScores() {
 function calculateIndexStandardScore() {
     // create array of sum of scaled scores to fetch
     const arrSumScaledScore = [
-        fetch(`http://localhost:3000/taps/iss/index_standard_score_ppi/${ppiSumScaledScore}`),
-        fetch(`http://localhost:3000/taps/iss/index_standard_score_ami/${amiSumScaledScore}`),
-        fetch(`http://localhost:3000/taps/iss/index_standard_score_lci/${lciSumScaledScore}`),
-        fetch(`http://localhost:3000/taps/iss/overall_standard_score/${oscSumScaledScore}`),
+        fetch(`/taps/iss/index_standard_score_ppi/${ppiSumScaledScore}`),
+        fetch(`/taps/iss/index_standard_score_ami/${amiSumScaledScore}`),
+        fetch(`/taps/iss/index_standard_score_lci/${lciSumScaledScore}`),
+        fetch(`/taps/iss/overall_standard_score/${oscSumScaledScore}`),
     ];
 
     // fetch index standard scores from sum scaled scores
@@ -596,7 +596,7 @@ function calculateConfidenceInterval() {
 
     // create an array of confidence intervals to fetch
     const arrConfidenceIntervalsFetch = [
-        fetch(`http://localhost:3000/taps/ci/confidence_intervals_${table}`)
+        fetch(`/taps/ci/confidence_intervals_${table}`)
     ];
 
     // fetch confidence intervals for all subtests and indexes
@@ -639,7 +639,7 @@ function calculateSubtestIndexStandardScore() {
     // create array of valid subtests to fetch
     const arrSubtestIssFetch = [];
     for(const subtest in objScaledScores) {
-        arrSubtestIssFetch.push(fetch(`http://localhost:3000/taps/subtestiss/${objScaledScores[subtest]}`));
+        arrSubtestIssFetch.push(fetch(`/taps/subtestiss/${objScaledScores[subtest]}`));
     }
 
     // fetch index standard scores from subtests
@@ -678,7 +678,7 @@ function calculateSubtestPercentileRank() {
     // create an array of valid subtests to fetch (using same array as calculateSubtestIndexStandardScore)
     const arrSubtestPercentileRankFetch = [];
     for(const subtest in objScaledScores) {
-        arrSubtestPercentileRankFetch.push(fetch(`http://localhost:3000/taps/subtestpr/${objScaledScores[subtest]}`));
+        arrSubtestPercentileRankFetch.push(fetch(`/taps/subtestpr/${objScaledScores[subtest]}`));
     }
     
     // fetch percentile rank from subtests
@@ -713,7 +713,7 @@ function calculateIndexPercentileRank() {
     // create an array of valid index standard scores to fetch percentile ranks (using same array as calculateIndexStandardScore)
     const arrIndexPercentileRankFetch = [];
     arrIndexStandardScores.forEach(ele => {
-        arrIndexPercentileRankFetch.push(fetch(`http://localhost:3000/taps/indexpr/${ele.standard_score}`));
+        arrIndexPercentileRankFetch.push(fetch(`/taps/indexpr/${ele.standard_score}`));
     })
 
     // fetch percentile rank from index standard scores
@@ -747,7 +747,7 @@ function calculateSubtestAgeEquivalent() {
     const arrSubtestAgeEquivalentFetch = [];
     for(const subtest in subtestRawScores) {
         if(subtestRawScores[subtest]>=0) {
-            arrSubtestAgeEquivalentFetch.push(fetch(`http://localhost:3000/taps/subtestae/${subtest}/${subtestRawScores[subtest]}`));
+            arrSubtestAgeEquivalentFetch.push(fetch(`/taps/subtestae/${subtest}/${subtestRawScores[subtest]}`));
         }
     }
 
@@ -787,10 +787,10 @@ function calculateIndexAgeEquivalent() {
 
     // create an array of valid index sums to fetch age equivalents 
     const arrIndexSumRawScoreFetch = [
-        fetch(`http://localhost:3000/taps/indexae/ppi/${ppiSumRawScore}`),
-        fetch(`http://localhost:3000/taps/indexae/ami/${amiSumRawScore}`),
-        fetch(`http://localhost:3000/taps/indexae/lci/${lciSumRawScore}`),
-        fetch(`http://localhost:3000/taps/indexae/osc/${oscSumRawScore}`),
+        fetch(`/taps/indexae/ppi/${ppiSumRawScore}`),
+        fetch(`/taps/indexae/ami/${amiSumRawScore}`),
+        fetch(`/taps/indexae/lci/${lciSumRawScore}`),
+        fetch(`/taps/indexae/osc/${oscSumRawScore}`),
     ]
 
     // fetch age equivalents for indexes

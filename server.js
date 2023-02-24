@@ -2,10 +2,6 @@ require('dotenv').config();
 const express = require('express');
 const mysql = require('mysql');
 const app = express();
-const cors = require('cors');
-app.use(cors({
-    origin: '54.183.233.17:3000'
-}));
 
 app.use(express.static('public'));
 
