@@ -234,3 +234,10 @@ h3 {
 #calculationError {
     margin-left: 10px;
 }
+
+
+/**************Loading Animation**********/
+
+body.progress, body.progress * {
+    cursor: progress;
+}

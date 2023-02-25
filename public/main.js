@@ -141,6 +141,9 @@ function useTable(yearDiff, monthDiff) {
 
 // function that fetches and updates DOM with scaled scores
 function calculateScore() {
+    // adds class of 'progress' to body to indicate progress in DOM update
+    document.querySelector('body').classList.add('progress');
+
     // displays error if Chronological Age Calculator is not calculated prior
     if(monthDiff===undefined || yearDiff===undefined) {
         return document.querySelector('#calculationError').innerText = 'Please calculate Chronological Age First';
@@ -356,6 +359,9 @@ function calculateScore() {
         document.querySelector('#subtest_1').value === '' ||
         document.querySelector('#subtest_11').value === ''
     ) {
+        // removes class of 'progress' from body to stop indication of progress in DOM update
+        document.querySelector('body').classList.remove('progress');
+
         return document.querySelector('#calculationError').innerText = 'Please fill out all required fields';
     }
 
@@ -412,6 +418,8 @@ function calculateScore() {
                 document.querySelector(`#${subtest}`).addEventListener('change', function() { removeRed(`#${subtest}`)});
                 document.querySelector(`#${subtest}_ci`).innerText = '-';
                 document.querySelector(`#${subtest}_pr`).innerText = '';
+                // removes class of 'progress' from body to stop indication of progress in DOM update
+                document.querySelector('body').classList.remove('progress');
                 if(subtest==='subtest_2' || subtest==='subtest_3' || subtest==='subtest_4') {
                     document.querySelector('#overall_ppi_ci').innerText = '-';
                     document.querySelector('#overall_ppi_pr').innerText = '';
@@ -660,6 +668,10 @@ function calculateSubtestIndexStandardScore() {
             for(const subtest in objSubtestIndexStandardScores) {
                 document.querySelector(`#${subtest}_ci`).innerText = `${Math.round(objSubtestIndexStandardScores[subtest] - objConfidenceIntervals[subtest])} - ${Math.round(objSubtestIndexStandardScores[subtest] + objConfidenceIntervals[subtest])}`;
             }
+
+            // removes class of 'progress' from body to stop indication of progress in DOM update
+            document.querySelector('body').classList.remove('progress');
+
         } catch {
             throw Error("Promised failed");
         }
