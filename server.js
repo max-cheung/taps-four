@@ -10,6 +10,10 @@ app.listen(process.env.PORT || PORT, function() {
 })
 
 app.get('/', (request, response) => {
+    // obtain and console log client IP Address
+    const ipAddress = request.socket.remoteAddress;
+    console.log(ipAddress);
+
     response.sendFile(__dirname + '/index.html')
 })
 
